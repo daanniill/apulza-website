@@ -454,9 +454,7 @@ function IconChevron({ className, open }: { className?: string; open: boolean })
 function Brand() {
   return (
     <a className="brand" href="#top" aria-label="Apulza home">
-      <span className="brand-mark" aria-hidden="true">
-        A
-      </span>
+      <img className="brand-mark" src="/assets/logo.jpeg" alt="" aria-hidden="true" />
       <span>Apulza</span>
     </a>
   )
