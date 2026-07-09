@@ -255,33 +255,6 @@ section {
   animation: fade-up 0.6s ease-out both;
 }
 
-.hero-product {
-  display: grid;
-  align-items: center;
-  padding: 142px 32px 78px;
-  background:
-    linear-gradient(150deg, rgba(242, 234, 251, 0.78), transparent 36%),
-    linear-gradient(180deg, var(--cream) 0%, var(--bg) 78%);
-}
-
-.hero-product-inner {
-  display: grid;
-  width: min(1180px, 100%);
-  grid-template-columns: minmax(0, 1fr) minmax(420px, 0.92fr);
-  align-items: center;
-  gap: 56px;
-  margin: 0 auto;
-}
-
-.hero-product-copy {
-  animation: fade-up 0.6s ease-out both;
-}
-
-.hero-product-copy .hero-lede {
-  margin-right: 0;
-  margin-left: 0;
-}
-
 .eyebrow {
   margin: 0 0 18px;
   color: var(--primary);
@@ -378,14 +351,6 @@ p {
   animation: draw-pulse 1.7s ease-out 0.3s forwards;
 }
 
-.hero-trust {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px 20px;
-  margin-top: 28px;
-}
-
-.hero-trust span,
 .trust-strip span {
   display: inline-flex;
   align-items: center;
@@ -395,29 +360,9 @@ p {
   font-weight: 700;
 }
 
-.hero-trust svg,
 .trust-strip svg {
   flex: none;
   color: var(--primary);
-}
-
-.product-panel {
-  position: relative;
-  animation: fade-up 0.7s ease-out 0.1s both;
-}
-
-.product-card {
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  border: 1px solid var(--primary-weak-bd);
-  border-radius: 8px;
-  background: linear-gradient(150deg, var(--primary-weak) 0%, var(--surface) 46%);
-  box-shadow: var(--shadow-lg);
-}
-
-.product-card-main {
-  padding: 26px 26px 22px;
 }
 
 .small-label {
@@ -432,7 +377,6 @@ p {
   text-transform: uppercase;
 }
 
-.product-card h3,
 .ready-card h3 {
   margin-bottom: 7px;
   font-size: 1.38rem;
@@ -440,20 +384,6 @@ p {
   letter-spacing: 0;
 }
 
-.product-card-main p {
-  margin-bottom: 18px;
-  color: var(--text-muted);
-  font-size: 0.86rem;
-}
-
-.product-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-}
-
-.product-actions button,
 .ready-card button {
   display: inline-flex;
   min-height: 44px;
@@ -466,116 +396,6 @@ p {
   color: var(--on-primary);
   cursor: pointer;
   font-weight: 700;
-}
-
-.product-actions span {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.progress-summary {
-  border-top: 1px solid var(--border);
-  padding: 18px 26px 22px;
-  background: var(--surface);
-}
-
-.progress-summary > div:first-child {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 12px;
-}
-
-.progress-summary span {
-  color: var(--text-subtle);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0;
-  text-transform: uppercase;
-}
-
-.progress-summary strong {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--success);
-  font-size: 0.78rem;
-}
-
-.progress-summary p {
-  margin-bottom: 12px;
-  color: var(--ink);
-  font-size: 1.9rem;
-  font-weight: 800;
-  line-height: 1;
-}
-
-.progress-summary p span {
-  margin-left: 4px;
-  color: var(--text-muted);
-  font-size: 0.95rem;
-  font-weight: 650;
-  text-transform: none;
-}
-
-.progress-bar {
-  height: 8px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: var(--surface-2);
-}
-
-.progress-bar span {
-  display: block;
-  width: 62%;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--primary);
-}
-
-.breath-card {
-  position: absolute;
-  bottom: -22px;
-  left: -26px;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 13px 16px;
-  background: var(--surface);
-  box-shadow: var(--shadow-lg);
-  animation: float-soft 6s ease-in-out infinite;
-}
-
-.breath-card > span {
-  display: grid;
-  width: 38px;
-  height: 38px;
-  flex: none;
-  place-items: center;
-  border: 1px solid var(--calm-bd);
-  border-radius: 8px;
-  background: var(--calm-weak);
-  color: var(--calm);
-}
-
-.breath-card strong {
-  display: block;
-  color: var(--ink);
-  font-size: 0.84rem;
-}
-
-.breath-card p {
-  margin-top: 2px;
-  color: var(--text-muted);
-  font-size: 0.74rem;
 }
 
 .trust-strip {
@@ -1408,45 +1228,6 @@ p {
   font-size: 0.82rem;
 }
 
-.hero-switcher {
-  position: fixed;
-  bottom: 18px;
-  left: 50%;
-  z-index: 90;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transform: translateX(-50%);
-  border-radius: 999px;
-  padding: 6px 6px 6px 14px;
-  background: rgba(36, 25, 45, 0.92);
-  box-shadow: var(--shadow-lg);
-  backdrop-filter: blur(10px);
-}
-
-.hero-switcher span {
-  color: #c9bed4;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.hero-switcher button {
-  min-height: 32px;
-  border: 0;
-  border-radius: 999px;
-  padding: 0 13px;
-  background: transparent;
-  color: #c9bed4;
-  cursor: pointer;
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-
-.hero-switcher button[aria-pressed='true'] {
-  background: var(--bg);
-  color: var(--ink);
-}
-
 @media (max-width: 1080px) {
   h1 {
     font-size: 4.65rem;
@@ -1456,17 +1237,8 @@ p {
     font-size: 2.85rem;
   }
 
-  .hero-product-inner,
   .product-showcase {
     grid-template-columns: 1fr;
-  }
-
-  .hero-product-copy .hero-lede {
-    max-width: 60ch;
-  }
-
-  .product-panel {
-    max-width: 560px;
   }
 
   .clear-grid {
@@ -1488,8 +1260,7 @@ p {
     min-height: auto;
   }
 
-  .hero-editorial,
-  .hero-product {
+  .hero-editorial {
     padding-top: 112px;
   }
 
@@ -1529,13 +1300,8 @@ p {
     padding: 76px 0;
   }
 
-  .hero-editorial,
-  .hero-product {
+  .hero-editorial {
     padding: 104px 16px 64px;
-  }
-
-  .hero-product-inner {
-    gap: 36px;
   }
 
   h1 {
@@ -1582,17 +1348,9 @@ p {
     padding: 22px;
   }
 
-  .product-card-main,
-  .progress-summary,
   .school-copy {
     padding-right: 22px;
     padding-left: 22px;
-  }
-
-  .breath-card {
-    position: static;
-    width: 100%;
-    margin-top: 12px;
   }
 
   .focus-header,
@@ -1620,9 +1378,5 @@ p {
   .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .hero-switcher {
-    display: none;
   }
 }

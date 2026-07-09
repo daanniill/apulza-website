@@ -6,8 +6,6 @@ type IconProps = {
   size?: number
 }
 
-type HeroStyle = 'editorial' | 'product'
-
 const navItems = [
   { label: 'How it works', href: '#how' },
   { label: 'Approach', href: '#clear' },
@@ -20,12 +18,6 @@ const trustPoints = [
   { label: 'Picks up where you left off', icon: <IconBookmark /> },
   { label: 'Adapts to your day', icon: <IconSliders /> },
   { label: 'Private and calm', icon: <IconShield /> },
-]
-
-const heroTrust = [
-  { label: 'No streaks', icon: <IconHeart /> },
-  { label: 'Remembers your place', icon: <IconBookmark /> },
-  { label: 'Free to start', icon: <IconCheck /> },
 ]
 
 const assumptions = [
@@ -549,57 +541,6 @@ function StepDemo({ kind }: { kind: (typeof steps)[number]['demo'] }) {
   )
 }
 
-function ProductPanel() {
-  return (
-    <div className="product-panel" aria-label="Apulza progress preview">
-      <div className="product-card">
-        <div className="product-card-main">
-          <div className="small-label">
-            <IconHeart />
-            Ready when you are
-          </div>
-          <h3>Read Ch. 4 - Memory and Attention</h3>
-          <p>Cognitive Psychology - picks up on page 112</p>
-          <div className="product-actions">
-            <button type="button">
-              <IconPlay />
-              Continue
-            </button>
-            <span>
-              <IconClock />
-              about 25 min left
-            </span>
-          </div>
-        </div>
-        <div className="progress-summary">
-          <div>
-            <span>This month</span>
-            <strong>
-              <IconCheck />
-              real progress
-            </strong>
-          </div>
-          <p>
-            140<span> min studied</span>
-          </p>
-          <div className="progress-bar" aria-hidden="true">
-            <span />
-          </div>
-        </div>
-      </div>
-      <div className="breath-card">
-        <span aria-hidden="true">
-          <IconHeart />
-        </span>
-        <div>
-          <strong>Take a breath</strong>
-          <p>You showed up today.</p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 function EditorialHero() {
   return (
     <section className="hero hero-editorial" id="top">
@@ -630,41 +571,6 @@ function EditorialHero() {
           <PulseLine />
           <span>Free to start - nothing to lose</span>
         </div>
-      </div>
-    </section>
-  )
-}
-
-function ProductHero() {
-  return (
-    <section className="hero hero-product" id="top">
-      <div className="hero-product-inner">
-        <div className="hero-product-copy">
-          <p className="eyebrow">A supportive study buddy</p>
-          <h1>A calm place to keep going.</h1>
-          <p className="hero-lede">
-            A study companion for students who carry ADHD, anxiety, or low days. No streaks to lose
-            - just the next small step, whenever you're ready.
-          </p>
-          <div className="hero-actions hero-actions-left">
-            <ButtonLink href="#start">
-              <IconPlay />
-              Start free
-            </ButtonLink>
-            <ButtonLink href="#how" variant="secondary">
-              See how it works
-            </ButtonLink>
-          </div>
-          <div className="hero-trust">
-            {heroTrust.map((item) => (
-              <span key={item.label}>
-                {item.icon}
-                {item.label}
-              </span>
-            ))}
-          </div>
-        </div>
-        <ProductPanel />
       </div>
     </section>
   )
@@ -715,7 +621,6 @@ function DashboardPreview() {
 }
 
 function App() {
-  const [heroStyle, setHeroStyle] = useState<HeroStyle>('editorial')
   const [openFaq, setOpenFaq] = useState(0)
 
   return (
@@ -734,7 +639,7 @@ function App() {
         </nav>
       </header>
 
-      {heroStyle === 'editorial' ? <EditorialHero /> : <ProductHero />}
+      <EditorialHero />
 
       <section className="trust-strip" aria-label="Product promises">
         {trustPoints.map((point) => (
@@ -989,23 +894,6 @@ function App() {
         </div>
       </footer>
 
-      <div className="hero-switcher" aria-label="Hero style">
-        <span>Hero</span>
-        <button
-          type="button"
-          aria-pressed={heroStyle === 'editorial'}
-          onClick={() => setHeroStyle('editorial')}
-        >
-          A - Editorial
-        </button>
-        <button
-          type="button"
-          aria-pressed={heroStyle === 'product'}
-          onClick={() => setHeroStyle('product')}
-        >
-          B - Product
-        </button>
-      </div>
     </main>
   )
 }
