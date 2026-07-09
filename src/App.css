@@ -64,6 +64,20 @@
   }
 }
 
+@keyframes hero-image-drift {
+  0% {
+    transform: scale(1.06) translate3d(-1.1%, -0.8%, 0);
+  }
+
+  50% {
+    transform: scale(1.1) translate3d(1.1%, 0.5%, 0);
+  }
+
+  100% {
+    transform: scale(1.08) translate3d(-0.4%, 1.1%, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -72,6 +86,10 @@
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.001ms !important;
+  }
+
+  .hero-editorial > img {
+    animation: none !important;
   }
 }
 
@@ -237,7 +255,10 @@ section {
   z-index: -2;
   width: 100%;
   height: 100%;
+  animation: hero-image-drift 24s ease-in-out infinite alternate;
   object-fit: cover;
+  transform: scale(1.06);
+  will-change: transform;
 }
 
 .hero-scrim {
@@ -1079,13 +1100,6 @@ p {
   font-size: 0.76rem;
 }
 
-.quote-note {
-  margin-top: 20px;
-  color: var(--text-subtle);
-  font-size: 0.78rem;
-  text-align: center;
-}
-
 .faq-band {
   border-bottom: 1px solid var(--border);
 }
@@ -1182,44 +1196,30 @@ p {
 }
 
 .footer-inner {
-  display: grid;
+  display: flex;
   width: min(1120px, calc(100% - 64px));
-  grid-template-columns: minmax(260px, 1.6fr) repeat(3, minmax(120px, 1fr));
-  gap: 40px;
+  justify-content: center;
   margin: 0 auto;
   padding: 56px 0 40px;
 }
 
+.footer-brand {
+  display: flex;
+  max-width: 38ch;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-brand .brand {
+  justify-content: center;
+}
+
 .footer-brand p {
-  max-width: 34ch;
   margin-top: 14px;
   color: var(--text-muted);
   font-size: 0.9rem;
   line-height: 1.6;
-}
-
-.footer-column {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.footer-column strong {
-  margin-bottom: 4px;
-  color: var(--text-subtle);
-  font-size: 0.76rem;
-  letter-spacing: 0;
-  text-transform: uppercase;
-}
-
-.footer-column a {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  text-decoration: none;
-}
-
-.footer-column a:hover {
-  color: var(--primary);
 }
 
 .footer-bottom {
@@ -1227,13 +1227,14 @@ p {
   width: min(1120px, calc(100% - 64px));
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 12px;
   border-top: 1px solid var(--border);
   margin: 0 auto;
   padding: 20px 0;
   color: var(--text-subtle);
   font-size: 0.82rem;
+  text-align: center;
 }
 
 @media (max-width: 1080px) {
@@ -1273,8 +1274,7 @@ p {
   }
 
   .split-section,
-  .school-card,
-  .footer-inner {
+  .school-card {
     grid-template-columns: 1fr;
   }
 
@@ -1290,9 +1290,6 @@ p {
     border-left: 0;
   }
 
-  .footer-inner {
-    gap: 28px;
-  }
 }
 
 @media (max-width: 680px) {
@@ -1385,6 +1382,6 @@ p {
 
   .footer-bottom {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
 }

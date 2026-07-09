@@ -199,33 +199,6 @@ const faqs = [
   },
 ]
 
-const footerColumns = [
-  {
-    title: 'Product',
-    links: [
-      { label: 'How it works', href: '#how' },
-      { label: 'Features', href: '#features' },
-      { label: 'For schools', href: '#schools' },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { label: 'Our approach', href: '#clear' },
-      { label: 'Manifesto', href: '#why' },
-      { label: 'Contact', href: '#start' },
-    ],
-  },
-  {
-    title: 'Resources',
-    links: [
-      { label: 'Design language', href: '#clear' },
-      { label: 'Dashboard', href: '#product' },
-      { label: 'FAQ', href: '#faq' },
-    ],
-  },
-]
-
 function IconCheck({ className, size = 15 }: IconProps) {
   return (
     <svg
@@ -814,7 +787,6 @@ function App() {
             </figure>
           ))}
         </div>
-        <p className="quote-note">Illustrative - replace with real student and counselor voices.</p>
       </section>
 
       <section className="section-band faq-band" id="faq">
@@ -877,16 +849,6 @@ function App() {
               next small step.
             </p>
           </div>
-          {footerColumns.map((column) => (
-            <div className="footer-column" key={column.title}>
-              <strong>{column.title}</strong>
-              {column.links.map((link) => (
-                <a href={link.href} key={link.href}>
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          ))}
         </div>
         <div className="footer-bottom">
           <span>© 2026 Apulza - Built on CLEAR</span>
