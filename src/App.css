@@ -1,9 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300..800&family=Newsreader:opsz,wght@6..72,300..600&display=swap');
 
 :root {
-  --bg: #fbfaf8;
-  --surface: #ffffff;
-  --surface-2: #f5f2ef;
+  --bg: #fbf7ff;
+  --bg-gradient:
+    radial-gradient(circle at 16% 12%, rgba(180, 130, 238, 0.34), transparent 34%),
+    radial-gradient(circle at 86% 4%, rgba(97, 26, 159, 0.22), transparent 30%),
+    linear-gradient(135deg, #fffbfd 0%, #f7efff 46%, #eadbf8 100%);
+  --surface: rgba(255, 255, 255, 0.88);
+  --surface-2: rgba(248, 244, 252, 0.88);
   --cream: #f6f0e7;
   --cream-2: #efe7da;
   --border: #ece6e0;
@@ -74,7 +78,8 @@
 .app {
   min-height: 100vh;
   overflow-x: clip;
-  background: var(--bg);
+  background: var(--bg-gradient);
+  background-attachment: fixed;
   color: var(--text);
   font-family: Figtree, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
@@ -242,10 +247,10 @@ section {
   background:
     linear-gradient(
       180deg,
-      rgba(251, 250, 248, 0.94) 0%,
-      rgba(251, 250, 248, 0.66) 31%,
-      rgba(251, 250, 248, 0.38) 56%,
-      rgba(251, 250, 248, 0.77) 84%,
+      rgba(251, 247, 255, 0.94) 0%,
+      rgba(251, 247, 255, 0.66) 31%,
+      rgba(251, 247, 255, 0.38) 56%,
+      rgba(251, 247, 255, 0.77) 84%,
       var(--bg) 100%
     );
 }
@@ -407,7 +412,8 @@ p {
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   padding: 22px 32px;
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(10px);
 }
 
 .section {
@@ -418,7 +424,8 @@ p {
 
 .section-band {
   border-top: 1px solid var(--border);
-  background: var(--surface);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(251, 247, 255, 0.66));
+  backdrop-filter: blur(10px);
 }
 
 .split-section {
@@ -1142,8 +1149,8 @@ p {
   overflow: hidden;
   border-bottom: 1px solid var(--border);
   background:
-    linear-gradient(180deg, rgba(242, 234, 251, 0.86), transparent 42%),
-    linear-gradient(180deg, var(--cream) 0%, var(--bg) 100%);
+    radial-gradient(circle at 50% 0%, rgba(185, 132, 238, 0.26), transparent 38%),
+    linear-gradient(180deg, rgba(242, 234, 251, 0.86), rgba(251, 247, 255, 0.8) 100%);
   text-align: center;
 }
 
@@ -1170,7 +1177,8 @@ p {
 }
 
 .footer {
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
 }
 
 .footer-inner {
