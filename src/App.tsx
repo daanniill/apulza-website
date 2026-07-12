@@ -97,6 +97,24 @@ const clearPrinciples = [
   },
 ]
 
+const trustEvidence = [
+  {
+    title: 'A visible product standard',
+    body: 'CLEAR is the rubric used to review every screen: cognitive load, re-entry, emotional safety, adaptation, and reliable memory.',
+    icon: <IconBookmark />,
+  },
+  {
+    title: 'Accessibility is a release check',
+    body: 'Strong contrast, 44px touch targets, clear focus states, and optional motion are treated as requirements, not extras.',
+    icon: <IconHeart />,
+  },
+  {
+    title: 'Privacy without surveillance',
+    body: 'Apulza is designed as a student companion—not a leaderboard, behavior score, or tool for watching students work.',
+    icon: <IconShield />,
+  },
+]
+
 const faqs = [
   {
     question: 'Is Apulza free?',
@@ -261,6 +279,45 @@ function IconArrow({ className, size = 16 }: IconProps) {
     >
       <line x1="5" x2="19" y1="12" y2="12" />
       <polyline points="13 6 19 12 13 18" />
+    </svg>
+  )
+}
+
+function IconMenu({ className, size = 20 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth="2.2"
+    >
+      <line x1="4" x2="20" y1="7" y2="7" />
+      <line x1="4" x2="20" y1="12" y2="12" />
+      <line x1="4" x2="20" y1="17" y2="17" />
+    </svg>
+  )
+}
+
+function IconClose({ className, size = 20 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth="2.2"
+    >
+      <line x1="6" x2="18" y1="6" y2="18" />
+      <line x1="18" x2="6" y1="6" y2="18" />
     </svg>
   )
 }
@@ -443,17 +500,27 @@ function EditorialHero() {
           ready.
         </p>
         <div className="hero-actions">
-          <ButtonLink href="#demo">
+          <ButtonLink href="#try">
             <IconPlay />
-            Request a demo
+            Try a small step
           </ButtonLink>
           <ButtonLink href="#how" variant="secondary">
             See how it works
           </ButtonLink>
         </div>
+        <div className="audience-paths" aria-label="Choose your path">
+          <a href="#try">
+            <span>For students</span>
+            Start with what is on your mind <IconArrow size={14} />
+          </a>
+          <a href="#schools">
+            <span>For schools & counselors</span>
+            See how Apulza supports your students <IconArrow size={14} />
+          </a>
+        </div>
         <div className="pulse-note">
           <PulseLine />
-          <span>Free to start - nothing to lose</span>
+          <span>Try it here — no account needed</span>
         </div>
       </div>
     </section>
@@ -529,7 +596,7 @@ function TinyDemo() {
   }
 
   return (
-    <section className="tiny-demo" aria-labelledby="tiny-demo-title">
+    <section className="tiny-demo" id="try" aria-labelledby="tiny-demo-title">
       <div className="tiny-demo-copy">
         <p className="eyebrow">Try it now</p>
         <h2 id="tiny-demo-title">Turn something heavy into one small step.</h2>
@@ -581,12 +648,12 @@ function DemoRequestForm() {
     const name = String(form.get('name') || '')
     const email = String(form.get('email') || '')
     const role = String(form.get('role') || '')
-    const subject = encodeURIComponent(`Free Apulza demo request from ${name}`)
+    const subject = encodeURIComponent(`Apulza walkthrough request from ${name}`)
     const body = encodeURIComponent(
       [
         'Hi Apulza team,',
         '',
-        "I'd like to request a free demo of Apulza.",
+        "I'd like to request an Apulza walkthrough.",
         '',
         `Name: ${name}`,
         `Email: ${email}`,
@@ -620,7 +687,6 @@ function DemoRequestForm() {
         <span>I am a...</span>
         <select name="role" defaultValue="" required>
           <option value="" disabled>Select your role</option>
-          <option>Student</option>
           <option>Parent or guardian</option>
           <option>Teacher or counselor</option>
           <option>School leader</option>
@@ -628,11 +694,11 @@ function DemoRequestForm() {
         </select>
       </label>
       <button className="button demo-submit" type="submit">
-        Request my free demo
+        Request a walkthrough
         <IconArrow />
       </button>
       <p className="form-note">
-        No commitment, no card. Your email app will open with your request ready to send.
+        No commitment. Your email app will open with your request ready to send.
       </p>
       {emailOpened ? (
         <p className="form-status" role="status">
@@ -646,6 +712,7 @@ function DemoRequestForm() {
 function App() {
   const [openFaq, setOpenFaq] = useState(0)
   const [calmerView, setCalmerView] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const reveals = Array.from(document.querySelectorAll<HTMLElement>('.motion-reveal'))
@@ -675,9 +742,13 @@ function App() {
     <main className={`app${calmerView ? ' is-calm' : ''}`}>
       <header className="site-header">
         <Brand />
-        <nav className="nav" aria-label="Primary navigation">
+        <nav
+          className={`nav${mobileMenuOpen ? ' is-open' : ''}`}
+          id="mobile-navigation"
+          aria-label="Primary navigation"
+        >
           {navItems.map((item) => (
-            <a href={item.href} key={item.href}>
+            <a href={item.href} key={item.href} onClick={() => setMobileMenuOpen(false)}>
               {item.label}
             </a>
           ))}
@@ -685,15 +756,28 @@ function App() {
             className="calm-toggle"
             type="button"
             aria-pressed={calmerView}
-            onClick={() => setCalmerView((current) => !current)}
+            onClick={() => {
+              setCalmerView((current) => !current)
+              setMobileMenuOpen(false)
+            }}
           >
             <IconSpark size={16} />
             <span>{calmerView ? 'Full view' : 'Calmer view'}</span>
           </button>
-          <a className="nav-cta" href="#demo">
-            Request demo
+          <a className="nav-cta" href="#try" onClick={() => setMobileMenuOpen(false)}>
+            Try it now
           </a>
         </nav>
+        <button
+          className="mobile-menu-toggle"
+          type="button"
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-navigation"
+          aria-label={mobileMenuOpen ? 'Close navigation' : 'Open navigation'}
+          onClick={() => setMobileMenuOpen((current) => !current)}
+        >
+          {mobileMenuOpen ? <IconClose /> : <IconMenu />}
+        </button>
       </header>
 
       <EditorialHero />
@@ -808,24 +892,28 @@ function App() {
               </article>
             ))}
           </div>
-          <a className="text-link" href="#demo">
-            See these principles in practice
-            <IconArrow />
-          </a>
-        </div>
-      </section>
-
-      <section className="section proof-section motion-reveal" id="proof">
-        <p className="eyebrow">Built with care</p>
-        <h2>We would rather earn trust than borrow it.</h2>
-        <p>
-          Apulza is still growing. Instead of anonymous success stories, every release is held to a
-          simple standard: reduce cognitive load, protect emotional safety, and make returning easy.
-        </p>
-        <div className="proof-points" aria-label="Product standards">
-          <span><IconHeart /> Shame-free language</span>
-          <span><IconBookmark /> Easy re-entry</span>
-          <span><IconShield /> Privacy-minded</span>
+          <div className="trust-proof motion-reveal" id="proof">
+            <div className="trust-proof-intro">
+              <p className="eyebrow">What we can say today</p>
+              <h2>Trust should be specific.</h2>
+              <p>
+                Apulza is still growing, so we will not borrow credibility from anonymous success
+                stories. These are the product commitments you can evaluate now.
+              </p>
+            </div>
+            <div className="evidence-grid" aria-label="Product commitments">
+              {trustEvidence.map((item) => (
+                <article key={item.title}>
+                  <span>{item.icon}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
+                </article>
+              ))}
+            </div>
+            <p className="evidence-note">
+              Apulza is a study support tool, not medical care or a replacement for a counselor.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -864,11 +952,11 @@ function App() {
         <div className="closing-inner">
           <div className="demo-copy motion-reveal">
             <PulseLine />
-            <p className="eyebrow">Free personal demo</p>
-            <h2>See how Apulza can meet you where you are.</h2>
+            <p className="eyebrow">A closer look</p>
+            <h2>Bring calmer study support to your students.</h2>
             <p>
-              Tell us a little about yourself and we'll walk you through the application, answer
-              your questions, and help you see whether it feels right.
+              Schools, counselors, and families can request a calm, personal walkthrough. Students
+              can try the small-step experience above without filling out a form.
             </p>
             <ul className="demo-promises">
               <li>
