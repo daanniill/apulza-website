@@ -523,6 +523,9 @@ function EditorialHero() {
           <span>Try it here — no account needed</span>
         </div>
       </div>
+      <a className="hero-scroll-cue" href="#promises" aria-label="Scroll to learn more">
+        <IconChevron open />
+      </a>
     </section>
   )
 }
@@ -782,7 +785,7 @@ function App() {
 
       <EditorialHero />
 
-      <section className="trust-strip" aria-label="Product promises">
+      <section className="trust-strip" id="promises" aria-label="Product promises">
         {trustPoints.map((point) => (
           <span key={point.label}>
             {point.icon}
