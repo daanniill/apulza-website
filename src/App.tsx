@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useState, type FormEvent, type ReactNode } from 'react'
 import './App.css'
 
 type IconProps = {
@@ -530,7 +530,7 @@ function EditorialHero() {
           ready.
         </p>
         <div className="hero-actions">
-          <ButtonLink href="#start">
+          <ButtonLink href="#demo">
             <IconPlay />
             Start free
           </ButtonLink>
@@ -591,6 +591,105 @@ function DashboardPreview() {
   )
 }
 
+function DemoRequestForm() {
+  const [emailOpened, setEmailOpened] = useState(false)
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const form = new FormData(event.currentTarget)
+    const name = String(form.get('name') || '')
+    const email = String(form.get('email') || '')
+    const role = String(form.get('role') || '')
+    const organization = String(form.get('organization') || '')
+    const message = String(form.get('message') || '')
+    const subject = encodeURIComponent(`Free Apulza demo request from ${name}`)
+    const body = encodeURIComponent(
+      [
+        'Hi Apulza team,',
+        '',
+        "I'd like to request a free demo of Apulza.",
+        '',
+        `Name: ${name}`,
+        `Email: ${email}`,
+        `I am a: ${role}`,
+        `School or organization: ${organization || 'Not provided'}`,
+        '',
+        'What I would like to explore:',
+        message || 'No additional details provided.',
+      ].join('\n'),
+    )
+
+    setEmailOpened(true)
+    window.location.href = `mailto:hello@apulza.com?subject=${subject}&body=${body}`
+  }
+
+  return (
+    <form className="demo-form" onSubmit={handleSubmit}>
+      <div className="field-row">
+        <label>
+          <span>Your name</span>
+          <input name="name" type="text" autoComplete="name" placeholder="Alex Morgan" required />
+        </label>
+        <label>
+          <span>Email address</span>
+          <input
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="alex@school.edu"
+            required
+          />
+        </label>
+      </div>
+      <div className="field-row">
+        <label>
+          <span>I am a...</span>
+          <select name="role" defaultValue="" required>
+            <option value="" disabled>
+              Select your role
+            </option>
+            <option>Student</option>
+            <option>Parent or guardian</option>
+            <option>Teacher or counselor</option>
+            <option>School leader</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>
+          <span>School or organization</span>
+          <input
+            name="organization"
+            type="text"
+            autoComplete="organization"
+            placeholder="Optional"
+          />
+        </label>
+      </div>
+      <label>
+        <span>What would you like to explore?</span>
+        <textarea
+          name="message"
+          rows={4}
+          placeholder="Tell us a little about who the demo is for and what would be most useful."
+        />
+      </label>
+      <button className="button demo-submit" type="submit">
+        Request my free demo
+        <IconArrow />
+      </button>
+      <p className="form-note">
+        No commitment, no card. Your email app will open with your request ready to send.
+      </p>
+      {emailOpened ? (
+        <p className="form-status" role="status">
+          Your request is ready in your email app. Send it when you're ready.
+        </p>
+      ) : null}
+    </form>
+  )
+}
+
 function App() {
   const [openFaq, setOpenFaq] = useState(0)
 
@@ -604,7 +703,7 @@ function App() {
               {item.label}
             </a>
           ))}
-          <a className="nav-cta" href="#start">
+          <a className="nav-cta" href="#demo">
             Start free
           </a>
         </nav>
@@ -728,7 +827,7 @@ function App() {
                 </li>
               ))}
             </ul>
-            <ButtonLink href="#start">Talk to us about your school</ButtonLink>
+            <ButtonLink href="#demo">Talk to us about your school</ButtonLink>
           </div>
           <div className="school-image">
             <img
@@ -818,23 +917,29 @@ function App() {
         </div>
       </section>
 
-      <section className="closing" id="start">
+      <section className="closing" id="demo">
         <div className="closing-inner">
-          <PulseLine />
-          <h2>Start where you are.</h2>
-          <p>
-            No streak to keep, no perfect moment to wait for. Open Apulza and take one small step -
-            that's more than enough.
-          </p>
-          <div className="hero-actions">
-            <ButtonLink href="#top">
-              <IconPlay />
-              Start free
-            </ButtonLink>
-            <ButtonLink href="#how" variant="secondary">
-              See how it works
-            </ButtonLink>
+          <div className="demo-copy">
+            <PulseLine />
+            <p className="eyebrow">Free personal demo</p>
+            <h2>See how Apulza can meet you where you are.</h2>
+            <p>
+              Tell us a little about yourself and we'll walk you through the application, answer
+              your questions, and help you see whether it feels right.
+            </p>
+            <ul className="demo-promises">
+              <li>
+                <IconCheck /> A calm, personal walkthrough
+              </li>
+              <li>
+                <IconCheck /> Time for your questions
+              </li>
+              <li>
+                <IconCheck /> No pressure or commitment
+              </li>
+            </ul>
           </div>
+          <DemoRequestForm />
         </div>
       </section>
 
