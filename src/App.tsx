@@ -20,12 +20,6 @@ const trustPoints = [
   { label: 'Private and calm', icon: <IconShield /> },
 ]
 
-const assumptions = [
-  "You'll remember where you left off.",
-  "You'll push through when it's hard.",
-  'A broken streak will motivate you.',
-]
-
 const steps = [
   {
     number: '1',
@@ -80,45 +74,6 @@ const showcaseTasks = [
   },
 ]
 
-const features = [
-  {
-    title: 'Nothing to lose',
-    body: 'No streaks, no leaderboards, no shame. Miss a day and nothing breaks - you just pick back up.',
-    tone: 'calm',
-    icon: <IconHeart />,
-  },
-  {
-    title: 'Right where you left off',
-    body: 'Scroll position, half-typed notes, and your last step are restored every single time you return.',
-    tone: 'primary',
-    icon: <IconBookmark />,
-  },
-  {
-    title: 'Adapts to your day',
-    body: 'Light, dark, or low-stimulation. Comfortable or compact. Set it up for the brain you brought today.',
-    tone: 'attention',
-    icon: <IconSliders />,
-  },
-  {
-    title: 'Kind by default',
-    body: 'Every message is warm and instructional. "Needs attention," never "overdue." No guilt, ever.',
-    tone: 'success',
-    icon: <IconChat />,
-  },
-  {
-    title: 'Time, externalized',
-    body: "Deadlines and next steps live in context, so you don't have to hold them in your head to stay on track.",
-    tone: 'primary',
-    icon: <IconClock size={20} />,
-  },
-  {
-    title: 'Calm by design',
-    body: 'Soft motion, generous space, one clear action per screen - and every animation can be turned off.',
-    tone: 'calm',
-    icon: <IconSpark />,
-  },
-]
-
 const schoolPoints = [
   'No streaks or leaderboards - nothing that shames a student who is struggling.',
   'Accessible by default: strong contrast, 44px touch targets, motion always optional.',
@@ -139,30 +94,6 @@ const clearPrinciples = [
     letter: 'R',
     title: 'Reliable memory',
     body: 'Externalize time and autosave. Assume nothing is remembered.',
-  },
-]
-
-const quotes = [
-  {
-    text: "It's the first study app that doesn't make me feel behind the second I open it.",
-    who: 'Second-year student',
-    detail: 'Psychology',
-    initials: 'S',
-    tone: 'primary',
-  },
-  {
-    text: 'My students actually come back to it. It meets them where they are instead of nagging.',
-    who: 'School counselor',
-    detail: 'Sixth-form college',
-    initials: 'C',
-    tone: 'calm',
-  },
-  {
-    text: 'The low-stim mode is the only reason I can open anything at all on a bad day.',
-    who: 'First-year student',
-    detail: 'Diagnosed ADHD',
-    initials: 'J',
-    tone: 'success',
   },
 ]
 
@@ -293,26 +224,6 @@ function IconPlay({ className, size = 14 }: IconProps) {
   )
 }
 
-function IconX({ className, size = 15 }: IconProps) {
-  return (
-    <svg
-      className={className}
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2.4"
-    >
-      <line x1="18" x2="6" y1="6" y2="18" />
-      <line x1="6" x2="18" y1="6" y2="18" />
-    </svg>
-  )
-}
-
 function IconArrow({ className, size = 16 }: IconProps) {
   return (
     <svg
@@ -370,25 +281,6 @@ function IconSliders({ className, size = 20 }: IconProps) {
       <circle cx="9" cy="8" r="2.6" fill="var(--bg)" />
       <line x1="4" x2="20" y1="16" y2="16" />
       <circle cx="15" cy="16" r="2.6" fill="var(--bg)" />
-    </svg>
-  )
-}
-
-function IconChat({ className, size = 20 }: IconProps) {
-  return (
-    <svg
-      className={className}
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.9"
-    >
-      <path d="M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 4V6a1 1 0 0 1 1-1z" />
     </svg>
   )
 }
@@ -532,7 +424,7 @@ function EditorialHero() {
         <div className="hero-actions">
           <ButtonLink href="#demo">
             <IconPlay />
-            Start free
+            Request a demo
           </ButtonLink>
           <ButtonLink href="#how" variant="secondary">
             See how it works
@@ -591,6 +483,63 @@ function DashboardPreview() {
   )
 }
 
+function TinyDemo() {
+  const [task, setTask] = useState('')
+  const [nextStep, setNextStep] = useState('')
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const normalized = task.trim().toLowerCase()
+
+    if (normalized.includes('read') || normalized.includes('chapter')) {
+      setNextStep('Open it and read the first three pages. Stop there if that is enough for today.')
+    } else if (normalized.includes('essay') || normalized.includes('write')) {
+      setNextStep('Write three rough bullet points. They do not need to be complete sentences.')
+    } else if (normalized.includes('practice') || normalized.includes('problem')) {
+      setNextStep('Try the first two questions, then take a short pause.')
+    } else {
+      setNextStep('Work on it for ten gentle minutes. You can decide what comes next after that.')
+    }
+  }
+
+  return (
+    <section className="tiny-demo" aria-labelledby="tiny-demo-title">
+      <div className="tiny-demo-copy">
+        <p className="eyebrow">Try it now</p>
+        <h2 id="tiny-demo-title">Turn something heavy into one small step.</h2>
+        <p>No account and no setup. Type one thing that is on your mind.</p>
+      </div>
+      <form className="tiny-demo-card" onSubmit={handleSubmit}>
+        <label htmlFor="tiny-task">What do you need to do?</label>
+        <div className="tiny-demo-input-row">
+          <input
+            id="tiny-task"
+            type="text"
+            value={task}
+            onChange={(event) => {
+              setTask(event.target.value)
+              setNextStep('')
+            }}
+            placeholder="Read chapter 4"
+            required
+          />
+          <button className="button" type="submit">Show my next step</button>
+        </div>
+        <div className="tiny-demo-result" aria-live="polite" data-visible={Boolean(nextStep)}>
+          {nextStep ? (
+            <>
+              <span><IconSpark size={16} /> Your next small step</span>
+              <strong>{nextStep}</strong>
+            </>
+          ) : (
+            <span>Your suggestion will appear here.</span>
+          )}
+        </div>
+      </form>
+    </section>
+  )
+}
+
 function DemoRequestForm() {
   const [emailOpened, setEmailOpened] = useState(false)
 
@@ -601,8 +550,6 @@ function DemoRequestForm() {
     const name = String(form.get('name') || '')
     const email = String(form.get('email') || '')
     const role = String(form.get('role') || '')
-    const organization = String(form.get('organization') || '')
-    const message = String(form.get('message') || '')
     const subject = encodeURIComponent(`Free Apulza demo request from ${name}`)
     const body = encodeURIComponent(
       [
@@ -613,10 +560,6 @@ function DemoRequestForm() {
         `Name: ${name}`,
         `Email: ${email}`,
         `I am a: ${role}`,
-        `School or organization: ${organization || 'Not provided'}`,
-        '',
-        'What I would like to explore:',
-        message || 'No additional details provided.',
       ].join('\n'),
     )
 
@@ -642,37 +585,16 @@ function DemoRequestForm() {
           />
         </label>
       </div>
-      <div className="field-row">
-        <label>
-          <span>I am a...</span>
-          <select name="role" defaultValue="" required>
-            <option value="" disabled>
-              Select your role
-            </option>
-            <option>Student</option>
-            <option>Parent or guardian</option>
-            <option>Teacher or counselor</option>
-            <option>School leader</option>
-            <option>Other</option>
-          </select>
-        </label>
-        <label>
-          <span>School or organization</span>
-          <input
-            name="organization"
-            type="text"
-            autoComplete="organization"
-            placeholder="Optional"
-          />
-        </label>
-      </div>
       <label>
-        <span>What would you like to explore?</span>
-        <textarea
-          name="message"
-          rows={4}
-          placeholder="Tell us a little about who the demo is for and what would be most useful."
-        />
+        <span>I am a...</span>
+        <select name="role" defaultValue="" required>
+          <option value="" disabled>Select your role</option>
+          <option>Student</option>
+          <option>Parent or guardian</option>
+          <option>Teacher or counselor</option>
+          <option>School leader</option>
+          <option>Other</option>
+        </select>
       </label>
       <button className="button demo-submit" type="submit">
         Request my free demo
@@ -692,9 +614,10 @@ function DemoRequestForm() {
 
 function App() {
   const [openFaq, setOpenFaq] = useState(0)
+  const [calmerView, setCalmerView] = useState(false)
 
   return (
-    <main className="app">
+    <main className={`app${calmerView ? ' is-calm' : ''}`}>
       <header className="site-header">
         <Brand />
         <nav className="nav" aria-label="Primary navigation">
@@ -703,8 +626,17 @@ function App() {
               {item.label}
             </a>
           ))}
+          <button
+            className="calm-toggle"
+            type="button"
+            aria-pressed={calmerView}
+            onClick={() => setCalmerView((current) => !current)}
+          >
+            <IconSpark size={16} />
+            <span>{calmerView ? 'Full view' : 'Calmer view'}</span>
+          </button>
           <a className="nav-cta" href="#demo">
-            Start free
+            Request demo
           </a>
         </nav>
       </header>
@@ -718,33 +650,6 @@ function App() {
             {point.label}
           </span>
         ))}
-      </section>
-
-      <section className="section split-section why-section" id="why">
-        <div>
-          <p className="eyebrow">Why Apulza</p>
-          <h2>Most study tools assume you're not overwhelmed.</h2>
-        </div>
-        <div className="copy-stack">
-          <p>
-            They're built for a calm, consistent, well-rested student - one who never loses their
-            place and pushes through when it's hard. That's not always who shows up, especially with
-            ADHD, anxiety, or depression in the picture.
-          </p>
-          <p className="assumption-label">The usual assumptions</p>
-          <ul className="assumption-list">
-            {assumptions.map((assumption) => (
-              <li key={assumption}>
-                <IconX />
-                <span>{assumption}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="standout-card">
-            <IconHeart />
-            <p>We don't build for any of that. We build for the day you're actually having.</p>
-          </div>
-        </div>
       </section>
 
       <section className="section-band" id="how">
@@ -769,6 +674,8 @@ function App() {
         </div>
       </section>
 
+      <TinyDemo />
+
       <section className="section product-showcase" id="product">
         <div className="dashboard-copy">
           <p className="eyebrow">The dashboard</p>
@@ -789,27 +696,6 @@ function App() {
         <DashboardPreview />
       </section>
 
-      <section className="section-band" id="features">
-        <div className="section features-section">
-          <div className="section-intro">
-            <p className="eyebrow">What makes it different</p>
-            <h2>Designed to reduce load, not add to it.</h2>
-            <p className="section-lede">
-              Every feature answers to one rule: protect the student's attention and their feelings.
-            </p>
-          </div>
-          <div className="feature-grid">
-            {features.map((feature) => (
-              <article className="feature-card" data-tone={feature.tone} key={feature.title}>
-                <span className="feature-icon">{feature.icon}</span>
-                <h3>{feature.title}</h3>
-                <p>{feature.body}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="section school-section" id="schools">
         <div className="school-card">
           <div className="school-copy">
@@ -827,7 +713,7 @@ function App() {
                 </li>
               ))}
             </ul>
-            <ButtonLink href="#demo">Talk to us about your school</ButtonLink>
+            <ButtonLink href="#demo">Request a school demo</ButtonLink>
           </div>
           <div className="school-image">
             <img
@@ -857,32 +743,24 @@ function App() {
               </article>
             ))}
           </div>
-          <a className="text-link" href="#why">
-            Read the full design language
+          <a className="text-link" href="#demo">
+            See these principles in practice
             <IconArrow />
           </a>
         </div>
       </section>
 
-      <section className="section voices-section" id="voices">
-        <div className="section-intro">
-          <p className="eyebrow">In their words</p>
-          <h2>The feeling we're going for.</h2>
-        </div>
-        <div className="quote-grid">
-          {quotes.map((quote) => (
-            <figure className="quote-card" data-tone={quote.tone} key={quote.who}>
-              <span aria-hidden="true">"</span>
-              <blockquote>{quote.text}</blockquote>
-              <figcaption>
-                <span>{quote.initials}</span>
-                <div>
-                  <strong>{quote.who}</strong>
-                  <p>{quote.detail}</p>
-                </div>
-              </figcaption>
-            </figure>
-          ))}
+      <section className="section proof-section" id="proof">
+        <p className="eyebrow">Built with care</p>
+        <h2>We would rather earn trust than borrow it.</h2>
+        <p>
+          Apulza is still growing. Instead of anonymous success stories, every release is held to a
+          simple standard: reduce cognitive load, protect emotional safety, and make returning easy.
+        </p>
+        <div className="proof-points" aria-label="Product standards">
+          <span><IconHeart /> Shame-free language</span>
+          <span><IconBookmark /> Easy re-entry</span>
+          <span><IconShield /> Privacy-minded</span>
         </div>
       </section>
 
