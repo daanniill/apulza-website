@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useState, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import './App.css'
 
 type IconProps = {
@@ -129,6 +129,27 @@ const faqs = [
       'There is no behind in Apulza. Streaks do not exist, plans reset quietly, and you simply pick up wherever you actually are.',
   },
 ]
+
+function handleTilePointerMove(event: ReactPointerEvent<HTMLElement>) {
+  if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return
+  }
+
+  const tile = event.currentTarget
+  const bounds = tile.getBoundingClientRect()
+  const x = (event.clientX - bounds.left) / bounds.width
+  const y = (event.clientY - bounds.top) / bounds.height
+
+  tile.style.setProperty('--tilt-x', `${(0.5 - y) * 7}deg`)
+  tile.style.setProperty('--tilt-y', `${(x - 0.5) * 7}deg`)
+  tile.style.setProperty('--cursor-x', `${x * 100}%`)
+  tile.style.setProperty('--cursor-y', `${y * 100}%`)
+}
+
+function resetTileTilt(event: ReactPointerEvent<HTMLElement>) {
+  event.currentTarget.style.setProperty('--tilt-x', '0deg')
+  event.currentTarget.style.setProperty('--tilt-y', '0deg')
+}
 
 function IconCheck({ className, size = 15 }: IconProps) {
   return (
@@ -441,7 +462,12 @@ function EditorialHero() {
 
 function DashboardPreview() {
   return (
-    <aside className="dashboard-preview" aria-label="Dashboard preview">
+    <aside
+      className="dashboard-preview interactive-tile motion-reveal"
+      aria-label="Dashboard preview"
+      onPointerMove={handleTilePointerMove}
+      onPointerLeave={resetTileTilt}
+    >
       <div className="browser-bar">
         <span />
         <span />
@@ -509,7 +535,12 @@ function TinyDemo() {
         <h2 id="tiny-demo-title">Turn something heavy into one small step.</h2>
         <p>No account and no setup. Type one thing that is on your mind.</p>
       </div>
-      <form className="tiny-demo-card" onSubmit={handleSubmit}>
+      <form
+        className="tiny-demo-card interactive-tile motion-reveal"
+        onSubmit={handleSubmit}
+        onPointerMove={handleTilePointerMove}
+        onPointerLeave={resetTileTilt}
+      >
         <label htmlFor="tiny-task">What do you need to do?</label>
         <div className="tiny-demo-input-row">
           <input
@@ -616,6 +647,30 @@ function App() {
   const [openFaq, setOpenFaq] = useState(0)
   const [calmerView, setCalmerView] = useState(false)
 
+  useEffect(() => {
+    const reveals = Array.from(document.querySelectorAll<HTMLElement>('.motion-reveal'))
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      reveals.forEach((element) => element.classList.add('is-visible'))
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { rootMargin: '0px 0px -9% 0px', threshold: 0.12 },
+    )
+
+    reveals.forEach((element) => observer.observe(element))
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <main className={`app${calmerView ? ' is-calm' : ''}`}>
       <header className="site-header">
@@ -654,14 +709,19 @@ function App() {
 
       <section className="section-band" id="how">
         <div className="section centered">
-          <p className="eyebrow">How it works</p>
-          <h2>Three small steps. That's the whole thing.</h2>
-          <p className="section-lede">
+          <p className="eyebrow motion-reveal">How it works</p>
+          <h2 className="motion-reveal">Three small steps. That's the whole thing.</h2>
+          <p className="section-lede motion-reveal">
             No setup marathon, no productivity system to learn. Start where you are.
           </p>
           <div className="step-grid">
             {steps.map((step) => (
-              <article className="step-card" key={step.title}>
+              <article
+                className="step-card interactive-tile motion-reveal"
+                key={step.title}
+                onPointerMove={handleTilePointerMove}
+                onPointerLeave={resetTileTilt}
+              >
                 <div className="step-card-heading">
                   <span>{step.number}</span>
                   <h3>{step.title}</h3>
@@ -677,7 +737,7 @@ function App() {
       <TinyDemo />
 
       <section className="section product-showcase" id="product">
-        <div className="dashboard-copy">
+        <div className="dashboard-copy motion-reveal">
           <p className="eyebrow">The dashboard</p>
           <h2>It always shows the next small step.</h2>
           <p>
@@ -697,7 +757,7 @@ function App() {
       </section>
 
       <section className="section school-section" id="schools">
-        <div className="school-card">
+        <div className="school-card motion-reveal">
           <div className="school-copy">
             <p className="eyebrow">For schools and counselors</p>
             <h2>Support that works alongside you.</h2>
@@ -726,7 +786,7 @@ function App() {
 
       <section className="clear-band" id="clear">
         <div className="section clear-inner">
-          <div className="section-intro">
+          <div className="section-intro motion-reveal">
             <p className="eyebrow">Our foundation</p>
             <h2>Everything is built on CLEAR.</h2>
             <p className="section-lede">
@@ -736,7 +796,12 @@ function App() {
           </div>
           <div className="clear-grid" aria-label="CLEAR principles">
             {clearPrinciples.map((principle) => (
-              <article className="clear-card" key={principle.letter}>
+              <article
+                className="clear-card interactive-tile motion-reveal"
+                key={principle.letter}
+                onPointerMove={handleTilePointerMove}
+                onPointerLeave={resetTileTilt}
+              >
                 <span>{principle.letter}</span>
                 <h3>{principle.title}</h3>
                 <p>{principle.body}</p>
@@ -750,7 +815,7 @@ function App() {
         </div>
       </section>
 
-      <section className="section proof-section" id="proof">
+      <section className="section proof-section motion-reveal" id="proof">
         <p className="eyebrow">Built with care</p>
         <h2>We would rather earn trust than borrow it.</h2>
         <p>
@@ -775,7 +840,7 @@ function App() {
               const isOpen = openFaq === index
 
               return (
-                <div className="faq-item" data-open={isOpen} key={faq.question}>
+                <div className="faq-item motion-reveal" data-open={isOpen} key={faq.question}>
                   <button
                     type="button"
                     aria-expanded={isOpen}
@@ -797,7 +862,7 @@ function App() {
 
       <section className="closing" id="demo">
         <div className="closing-inner">
-          <div className="demo-copy">
+          <div className="demo-copy motion-reveal">
             <PulseLine />
             <p className="eyebrow">Free personal demo</p>
             <h2>See how Apulza can meet you where you are.</h2>
@@ -817,7 +882,9 @@ function App() {
               </li>
             </ul>
           </div>
-          <DemoRequestForm />
+          <div className="motion-reveal">
+            <DemoRequestForm />
+          </div>
         </div>
       </section>
 

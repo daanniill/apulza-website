@@ -78,6 +78,105 @@
   }
 }
 
+@keyframes result-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.motion-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.motion-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.step-grid .motion-reveal:nth-child(2),
+.clear-grid .motion-reveal:nth-child(2),
+.faq-list .motion-reveal:nth-child(2) {
+  transition-delay: 70ms;
+}
+
+.step-grid .motion-reveal:nth-child(3),
+.clear-grid .motion-reveal:nth-child(3),
+.faq-list .motion-reveal:nth-child(3) {
+  transition-delay: 140ms;
+}
+
+.clear-grid .motion-reveal:nth-child(4),
+.faq-list .motion-reveal:nth-child(4) {
+  transition-delay: 210ms;
+}
+
+.clear-grid .motion-reveal:nth-child(5),
+.faq-list .motion-reveal:nth-child(5) {
+  transition-delay: 280ms;
+}
+
+.interactive-tile {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --cursor-x: 50%;
+  --cursor-y: 50%;
+  position: relative;
+  isolation: isolate;
+  transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  transition:
+    opacity 0.7s ease,
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+  will-change: transform;
+}
+
+.interactive-tile::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    260px circle at var(--cursor-x) var(--cursor-y),
+    rgba(255, 255, 255, 0.48),
+    rgba(190, 143, 239, 0.09) 34%,
+    transparent 68%
+  );
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.interactive-tile:hover {
+  border-color: rgba(97, 26, 159, 0.28);
+  box-shadow: 0 20px 42px -26px rgba(67, 24, 99, 0.42);
+}
+
+.interactive-tile:hover::after {
+  opacity: 1;
+}
+
+.interactive-tile > * {
+  position: relative;
+  z-index: 1;
+}
+
+.interactive-tile.motion-reveal:not(.is-visible) {
+  transform: perspective(900px) translateY(24px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -234,11 +333,21 @@ section {
   line-height: 1;
   text-decoration: none;
   box-shadow: 0 12px 26px -10px var(--ring);
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .button:hover {
   background: var(--primary-strong);
   color: var(--on-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px -12px var(--ring);
+}
+
+.button:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .button-secondary {
@@ -547,6 +656,7 @@ p {
   border-color: var(--success-bd);
   background: var(--success-weak);
   color: var(--text);
+  animation: result-pop 0.42s cubic-bezier(0.2, 0.75, 0.25, 1) both;
 }
 
 .tiny-demo-result span {
@@ -712,6 +822,16 @@ p {
   flex-direction: column;
   padding: 28px;
   text-align: left;
+}
+
+.step-card:hover .step-card-heading span,
+.clear-card:hover > span {
+  transform: translateZ(18px) rotate(-3deg) scale(1.04);
+}
+
+.step-card-heading span,
+.clear-card > span {
+  transition: transform 180ms ease;
 }
 
 .step-card-heading {
@@ -1126,6 +1246,19 @@ p {
   box-shadow: none;
 }
 
+.clear-card.interactive-tile::after {
+  background: radial-gradient(
+    220px circle at var(--cursor-x) var(--cursor-y),
+    rgba(217, 190, 246, 0.16),
+    transparent 68%
+  );
+}
+
+.clear-card.interactive-tile:hover {
+  border-color: rgba(217, 190, 246, 0.3);
+  box-shadow: 0 22px 40px -24px rgba(0, 0, 0, 0.62);
+}
+
 .clear-card > span {
   border-color: rgba(217, 190, 246, 0.2);
   background: rgba(187, 140, 241, 0.16);
@@ -1214,6 +1347,15 @@ p {
   opacity: 0.12;
   filter: grayscale(0.8);
   transform: none;
+}
+
+.is-calm .interactive-tile {
+  transform: none !important;
+  will-change: auto;
+}
+
+.is-calm .interactive-tile::after {
+  display: none;
 }
 
 .is-calm .hero-scrim {
@@ -1314,6 +1456,7 @@ p {
 
 .faq-item[data-open='true'] {
   border-color: var(--primary-weak-bd);
+  box-shadow: 0 12px 28px -24px rgba(67, 24, 99, 0.45);
 }
 
 .faq-item button {
