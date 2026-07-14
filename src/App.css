@@ -2852,15 +2852,22 @@ p {
 
 .cafe-pet-targets {
   position: absolute;
-  inset: 0;
+  inset: 1px;
   z-index: 30;
+  pointer-events: none;
+}
+
+.cafe-pet-target-motion {
+  position: absolute;
   pointer-events: none;
 }
 
 .cafe-pet-target {
   position: absolute;
-  min-width: 36px;
-  min-height: 36px;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 36px);
+  height: max(100%, 36px);
   border: 0;
   border-radius: 12px;
   outline: none;
@@ -2868,6 +2875,7 @@ p {
   background: transparent;
   cursor: pointer;
   pointer-events: auto;
+  transform: translate(-50%, -50%);
 }
 
 .cafe-pet-target:hover {
@@ -2882,7 +2890,7 @@ p {
   background: radial-gradient(circle, rgba(255, 255, 255, 0.34), transparent 70%);
 }
 
-.cafe-pet-target.pet-ember {
+.cafe-pet-target-motion.pet-ember {
   animation: cc-pace 8.4s ease-in-out infinite;
 }
 

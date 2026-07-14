@@ -589,10 +589,10 @@ function CatCafeSnippet() {
   }
 
   return (
-    <div className="product-snippet cafe-snippet" aria-label="My Cafe focus space preview">
+    <div className="product-snippet cafe-snippet" aria-label="My Cat Cafe focus space preview">
       <div className="cafe-head">
         <div>
-          <h3>My Cafe</h3>
+          <h3>My Cat Cafe</h3>
           <p>Quiet company for this focus session</p>
         </div>
         <div className="cafe-pills" aria-label="Café status">
@@ -611,20 +611,24 @@ function CatCafeSnippet() {
           {cafePetTargets.map((cat) => {
             const count = petCounts[cat.id]
             return (
-              <button
-                className={`cafe-pet-target pet-${cat.id}`}
+              <span
+                className={`cafe-pet-target-motion pet-${cat.id}`}
                 style={cat.style}
-                type="button"
-                aria-label={`Pet ${cat.name}`}
                 key={cat.id}
-                onClick={() => petCat(cat.id, cat.name)}
               >
-                {count ? (
-                  <span className="pet-hearts" key={count} aria-hidden="true">
-                    <span>♥</span><span>♥</span><span>♥</span>
-                  </span>
-                ) : null}
-              </button>
+                <button
+                  className="cafe-pet-target"
+                  type="button"
+                  aria-label={`Pet ${cat.name}`}
+                  onClick={() => petCat(cat.id, cat.name)}
+                >
+                  {count ? (
+                    <span className="pet-hearts" key={count} aria-hidden="true">
+                      <span>♥</span><span>♥</span><span>♥</span>
+                    </span>
+                  ) : null}
+                </button>
+              </span>
             )
           })}
         </div>
@@ -792,12 +796,12 @@ function ProductSnippets() {
             <p className="eyebrow">Focus and return</p>
             <h3>A companion when quiet company helps.</h3>
             <p>
-              My Cafe offers optional ambient body-doubling during focus sessions. Students can
+              My Cat Cafe offers optional ambient body-doubling during focus sessions. Students can
               spend time with a cat companion and make the space their own—or skip it entirely.
             </p>
             <ul className="snippet-benefits">
               <li><IconCheck /> Entirely optional, with no penalty for taking a break</li>
-              <li><IconCheck /> My Clawset adds light self-expression, not a grind loop</li>
+              <li><IconCheck /> My Clawset lets students customize their cats without a grind loop</li>
               <li><IconCheck /> No leaderboard, streak, or competitive pressure</li>
             </ul>
           </div>
@@ -820,9 +824,9 @@ function ProductSnippets() {
             <article>
               <span className="support-tool-icon"><IconSliders /></span>
               <p className="eyebrow">My Clawset</p>
-              <h4>Personalization without pressure.</h4>
-              <p>Choose simple looks for a companion as self-expression. Nothing expires when you step away.</p>
-              <div className="clawset-preview"><i /><i /><i /><span>Choose what feels like you</span></div>
+              <h4>Customize your cats without pressure.</h4>
+              <p>Choose simple looks for your cats. Nothing expires when you step away.</p>
+              <div className="clawset-preview"><i /><i /><i /><span>Make your cats your own</span></div>
             </article>
             <article>
               <span className="support-tool-icon"><IconBookmark /></span>
