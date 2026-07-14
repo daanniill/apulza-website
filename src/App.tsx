@@ -1,5 +1,6 @@
-import { useEffect, useState, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { memo, useEffect, useState, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import './App.css'
+import { catCafeSceneCss, catCafeSceneHtml } from './catCafeSnippet'
 
 type IconProps = {
   className?: string
@@ -8,9 +9,9 @@ type IconProps = {
 
 const navItems = [
   { label: 'How it works', href: '#how' },
+  { label: 'Inside Apulza', href: '#inside' },
   { label: 'Approach', href: '#clear' },
   { label: 'For schools', href: '#schools' },
-  { label: 'FAQ', href: '#faq' },
 ]
 
 const trustPoints = [
@@ -45,33 +46,6 @@ const showcasePoints = [
   'Opens on where you left off - scroll, notes and next step restored.',
   "Today's focus is short by design. Half of it still counts.",
   'Progress is reframed as encouragement, never a scoreboard.',
-]
-
-const showcaseTasks = [
-  {
-    title: 'Essay outline draft',
-    badge: 'Complete',
-    tone: 'success',
-    checked: true,
-    struck: true,
-    icon: <IconCheck size={12} />,
-  },
-  {
-    title: 'Practice set 3.2',
-    badge: 'Needs a look',
-    tone: 'attention',
-    checked: false,
-    struck: false,
-    icon: <IconClock size={12} />,
-  },
-  {
-    title: 'Read Ch. 4 - Memory',
-    badge: 'In plan',
-    tone: 'primary',
-    checked: false,
-    struck: false,
-    icon: <IconInfo size={12} />,
-  },
 ]
 
 const schoolPoints = [
@@ -204,27 +178,6 @@ function IconClock({ className, size = 15 }: IconProps) {
     >
       <circle cx="12" cy="12" r="9" />
       <polyline points="12 7 12 12 15 14" />
-    </svg>
-  )
-}
-
-function IconInfo({ className, size = 13 }: IconProps) {
-  return (
-    <svg
-      className={className}
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2.2"
-    >
-      <circle cx="12" cy="12" r="9" />
-      <line x1="12" x2="12" y1="11" y2="16" />
-      <circle cx="12" cy="7.5" r="0.7" fill="currentColor" stroke="none" />
     </svg>
   )
 }
@@ -531,6 +484,12 @@ function EditorialHero() {
 }
 
 function DashboardPreview() {
+  const courses = [
+    { code: 'OC', name: 'Organic Chemistry', status: 'Plan ready', tone: 'violet' },
+    { code: 'UH', name: 'U.S. History', status: 'Plan ready', tone: 'blue' },
+    { code: 'CI', name: 'Calculus II', status: 'Set up plan', tone: 'amber' },
+  ]
+
   return (
     <aside
       className="dashboard-preview interactive-tile motion-reveal"
@@ -544,38 +503,239 @@ function DashboardPreview() {
         <span />
         <strong>Good afternoon, Maya</strong>
       </div>
-      <div className="dashboard-body">
-        <div className="ready-card">
+      <div className="dashboard-body dashboard-snippet-body">
+        <div className="dash-assignment-card">
           <div className="small-label">
             <IconHeart />
             Ready when you are
           </div>
-          <h3>Read Ch. 4 - Memory and Attention</h3>
-          <button type="button">
-            <IconPlay />
-            Continue
-          </button>
-        </div>
-        <div className="focus-card">
-          <div className="focus-header">
-            <h3>Today's focus</h3>
-            <span>3 items - half counts</span>
+          <h3>Rhetorical Analysis Essay</h3>
+          <p>English 201 · Due in 2 days</p>
+          <div className="dash-assignment-actions">
+            <a href="#try"><IconPlay /> Open</a>
+            <span><IconClock size={13} /> Essay</span>
           </div>
-          {showcaseTasks.map((task) => (
-            <div className="focus-row" data-tone={task.tone} key={task.title}>
-              <span className={`focus-check ${task.checked ? 'is-checked' : ''}`}>
-                {task.checked ? <IconCheck size={12} /> : null}
-              </span>
-              <strong className={task.struck ? 'is-struck' : ''}>{task.title}</strong>
-              <em>
-                {task.icon}
-                {task.badge}
-              </em>
+        </div>
+
+        <div className="dash-stat-grid">
+          <div className="dash-stat-card dash-minutes-card">
+            <span className="dash-card-label"><IconClock size={14} /> Study time this month</span>
+            <strong>140 <small>min</small></strong>
+            <p>That is real progress, and it is still climbing.</p>
+            <div className="dash-chart" aria-hidden="true"><i /><i /></div>
+          </div>
+          <div className="dash-stat-card dash-completed-card">
+            <div><span className="dash-card-label">Completed this month</span><strong>4</strong></div>
+            <div className="dash-complete-tally">
+              {[0, 1, 2, 3].map((item) => <span key={item}><IconCheck size={13} /></span>)}
+            </div>
+            <p>4 assignments done—nice work.</p>
+          </div>
+        </div>
+
+        <div className="dash-courses-card">
+          <div className="dash-courses-head">
+            <h3>Your courses</h3>
+            <p>3 of 4 have a study plan ready.</p>
+          </div>
+          {courses.map((course) => (
+            <div className="dash-course-row" key={course.code}>
+              <span className="dash-course-code" data-tone={course.tone}>{course.code}</span>
+              <strong>{course.name}</strong>
+              <em data-ready={course.status === 'Plan ready'}>{course.status}</em>
+            </div>
+          ))}
+          <button className="dash-add-course" type="button"><span>+</span> Add a course</button>
+        </div>
+
+        <a className="dash-continue-row" href="#try">
+          <span className="dash-continue-icon"><IconBookmark size={16} /></span>
+          <span>
+            <small>Continue where you left off</small>
+            <strong>Problem Set 4</strong>
+            <em>You are on step 2 of 5 · Calculus II</em>
+          </span>
+          <b>Continue <IconArrow size={13} /></b>
+        </a>
+      </div>
+    </aside>
+  )
+}
+
+const cafePetTargets = [
+  { id: 'midnight', name: 'Midnight', style: { left: '67%', top: '57.69%', width: '8.5%', height: '14.23%' } },
+  { id: 'cloud', name: 'Cloud', style: { left: '29%', top: '45.38%', width: '8.5%', height: '14.23%' } },
+  { id: 'truffle', name: 'Truffle', style: { left: '53%', top: '76.15%', width: '8.16%', height: '13.66%' } },
+  { id: 'ember', name: 'Ember', style: { left: '11.5%', top: '82.31%', width: '8.5%', height: '14.23%' } },
+  { id: 'feather', name: 'Feather', style: { left: '53.5%', top: '57.69%', width: '8.5%', height: '14.23%' } },
+] as const
+
+const StaticCatCafeScene = memo(function StaticCatCafeScene() {
+  return (
+    <>
+      <style>{catCafeSceneCss}</style>
+      <div dangerouslySetInnerHTML={{ __html: catCafeSceneHtml }} />
+    </>
+  )
+})
+
+function CatCafeSnippet() {
+  const [petCounts, setPetCounts] = useState<Record<string, number>>({})
+  const [lastPetted, setLastPetted] = useState('')
+
+  const petCat = (id: string, name: string) => {
+    setPetCounts((current) => ({ ...current, [id]: (current[id] ?? 0) + 1 }))
+    setLastPetted(`${name} loved that!`)
+  }
+
+  return (
+    <div className="product-snippet cafe-snippet" aria-label="My Cat Café preview">
+      <div className="cafe-head">
+        <div>
+          <h3>My Cat Café</h3>
+          <p>5 of 30 cats</p>
+        </div>
+        <div className="cafe-pills" aria-label="Café status">
+          <span className="coin-pill">● 80</span>
+          <span className="clawset-pill">▣ Clawset</span>
+          <span><i className="time-dot" /> Morning · 3:38 PM</span>
+        </div>
+      </div>
+      <div className="cafe-room-bar">
+        <span className="cafe-room-pill"><i /> Lounge <em>5</em></span>
+        <span className="pet-hint">Click a cat to give them a pet</span>
+      </div>
+      <div className="cafe-scene-shell">
+        <StaticCatCafeScene />
+        <div className="cafe-pet-targets">
+          {cafePetTargets.map((cat) => {
+            const count = petCounts[cat.id]
+            return (
+              <button
+                className={`cafe-pet-target pet-${cat.id}`}
+                style={cat.style}
+                type="button"
+                aria-label={`Pet ${cat.name}`}
+                key={cat.id}
+                onClick={() => petCat(cat.id, cat.name)}
+              >
+                {count ? (
+                  <span className="pet-hearts" key={count} aria-hidden="true">
+                    <span>♥</span><span>♥</span><span>♥</span>
+                  </span>
+                ) : null}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+      <div className="cafe-footer">
+        <span><i /> Studying</span>
+        <span className="pet-response" aria-live="polite">{lastPetted}</span>
+      </div>
+    </div>
+  )
+}
+
+function StudyPlanSnippet() {
+  return (
+    <div className="product-snippet plan-snippet" aria-label="Personalized study plan preview">
+      <div className="plan-summary">
+        <span>Your plan</span>
+        <p>
+          A steady, low-pressure approach built around short focus blocks and spaced review—paced
+          for how you actually study.
+        </p>
+        <small>Generated for Cognitive Psychology</small>
+      </div>
+      <div className="snippet-card strategy-card">
+        <div className="snippet-card-head">
+          <span aria-hidden="true">●</span>
+          <h3>Study strategies</h3>
+        </div>
+        <div className="strategy-row">
+          <strong>Break sessions into 25-minute focus blocks</strong>
+          <p>Clear stopping points make it easier to begin and easier to come back.</p>
+        </div>
+        <div className="strategy-row">
+          <strong>Review notes within 24 hours</strong>
+          <p>A quick ten-minute pass helps the material stay available for longer.</p>
+        </div>
+      </div>
+      <div className="snippet-card session-card">
+        <div className="snippet-card-head">
+          <span aria-hidden="true">●</span>
+          <h3>Study session structure</h3>
+          <em>70 min total</em>
+        </div>
+        <div className="session-blocks">
+          {[
+            ['Warm-up', '5 min'],
+            ['Focus block', '25 min'],
+            ['Reset', '5 min'],
+            ['Focus block', '25 min'],
+            ['Wrap-up', '10 min'],
+          ].map(([label, time], index) => (
+            <div className="session-block" data-break={index === 2} key={label + index}>
+              <span>{label}</span>
+              <strong>{time}</strong>
             </div>
           ))}
         </div>
       </div>
-    </aside>
+    </div>
+  )
+}
+
+function ProductSnippets() {
+  return (
+    <section className="inside-section" id="inside" aria-labelledby="inside-title">
+      <div className="section inside-inner">
+        <div className="section-intro centered motion-reveal">
+          <p className="eyebrow">Inside Apulza</p>
+          <h2 id="inside-title">A plan that helps. A world that feels good to return to.</h2>
+          <p className="section-lede">
+            Apulza pairs practical, personalized study support with a cozy reward space—so making
+            progress feels useful in the moment and welcoming over time.
+          </p>
+        </div>
+        <article className="snippet-feature snippet-feature-plan">
+          <div className="snippet-copy motion-reveal">
+            <span className="snippet-number">01</span>
+            <p className="eyebrow">Your study plan</p>
+            <h3>Structure that bends around the student.</h3>
+            <p>
+              Apulza turns a course into short strategies, realistic focus blocks, and a weekly
+              rhythm. It explains why each suggestion helps without turning the plan into another
+              assignment.
+            </p>
+            <ul className="snippet-benefits">
+              <li><IconCheck /> Personalized to the course and the student</li>
+              <li><IconCheck /> Clear stopping points and built-in resets</li>
+              <li><IconCheck /> Useful accommodations kept close at hand</li>
+            </ul>
+          </div>
+          <div className="snippet-frame motion-reveal"><StudyPlanSnippet /></div>
+        </article>
+        <article className="snippet-feature snippet-feature-cafe">
+          <div className="snippet-copy motion-reveal">
+            <span className="snippet-number">02</span>
+            <p className="eyebrow">My Cat Café</p>
+            <h3>Gentle rewards, with no streak anxiety.</h3>
+            <p>
+              Focus time helps a student grow a cozy café, meet new cats, and make the space their
+              own. The reward is about returning—not maintaining a perfect record.
+            </p>
+            <ul className="snippet-benefits">
+              <li><IconCheck /> Progress unlocks cats and cozy spaces</li>
+              <li><IconCheck /> No leaderboard or competitive pressure</li>
+              <li><IconCheck /> A reason to return that still feels playful</li>
+            </ul>
+          </div>
+          <div className="snippet-frame motion-reveal"><CatCafeSnippet /></div>
+        </article>
+      </div>
+    </section>
   )
 }
 
@@ -842,6 +1002,8 @@ function App() {
         </div>
         <DashboardPreview />
       </section>
+
+      <ProductSnippets />
 
       <section className="section school-section" id="schools">
         <div className="school-card motion-reveal">
