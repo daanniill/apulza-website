@@ -980,6 +980,15 @@ function App() {
   const [openFaq, setOpenFaq] = useState(0)
   const [calmerView, setCalmerView] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [headerScrolled, setHeaderScrolled] = useState(false)
+
+  useEffect(() => {
+    const updateHeader = () => setHeaderScrolled(window.scrollY > 24)
+
+    updateHeader()
+    window.addEventListener('scroll', updateHeader, { passive: true })
+    return () => window.removeEventListener('scroll', updateHeader)
+  }, [])
 
   useEffect(() => {
     const reveals = Array.from(document.querySelectorAll<HTMLElement>('.motion-reveal'))
@@ -1030,7 +1039,7 @@ function App() {
 
   return (
     <main className={`app${calmerView ? ' is-calm' : ''}`}>
-      <header className="site-header">
+      <header className={`site-header${headerScrolled ? ' is-scrolled' : ''}`}>
         <Brand />
         <nav
           className={`nav${mobileMenuOpen ? ' is-open' : ''}`}
