@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+  <title>Apulza</title>
+  <path
+    d="M2.75 38 15.15 10.5h5.95L32.5 38h-5.85L18.2 18.05 9.5 38H2.75Z"
+    stroke="#6B1A9A"
+    stroke-width="2.15"
+    stroke-linejoin="miter"
+  />
+  <path
+    d="M13.25 29h11.6"
+    stroke="#6B1A9A"
+    stroke-width="2.15"
+    stroke-linecap="square"
+  />
+  <path
+    d="M23.45 27.15h3.65l3.05-7.35 4.15 16.3 4.15-25.15 3.65 16.2h4.15"
+    stroke="#6B1A9A"
+    stroke-width="2.15"
+    stroke-linecap="square"
+    stroke-linejoin="miter"
+  />
+</svg>
