@@ -635,6 +635,93 @@ const cafePetTargets = [
   { id: 'feather', name: 'Feather', style: { left: '53.5%', top: '57.69%', width: '8.5%', height: '14.23%' } },
 ] as const
 
+type CafeCatId = (typeof cafePetTargets)[number]['id']
+type CatDiscoveryHandler = (cat: CafeCatId, name: string, message: string) => void
+
+const cafeCatNames = Object.fromEntries(
+  cafePetTargets.map((cat) => [cat.id, cat.name]),
+) as Record<CafeCatId, string>
+
+function extractCafeCatSvg(name: string) {
+  const catStart = catCafeSceneHtml.indexOf(`title="${name}"`)
+  const svgStart = catCafeSceneHtml.indexOf('<svg viewBox="0 0 72 78">', catStart)
+  const svgEnd = catCafeSceneHtml.indexOf('</svg>', svgStart)
+
+  return catStart >= 0 && svgStart >= 0 && svgEnd >= 0
+    ? catCafeSceneHtml.slice(svgStart, svgEnd + 6)
+    : ''
+}
+
+const cafeCatSvgAssets = Object.fromEntries(
+  cafePetTargets.map((cat) => [cat.id, extractCafeCatSvg(cat.name)]),
+) as Record<CafeCatId, string>
+
+function CafeCatAsset({ cat }: { cat: CafeCatId }) {
+  return (
+    <span
+      className={`cafe-cat-asset cafe-cat-asset-${cat}`}
+      aria-hidden="true"
+      dangerouslySetInnerHTML={{ __html: cafeCatSvgAssets[cat] }}
+    />
+  )
+}
+
+function CatEasterEgg({
+  cat,
+  className,
+  found,
+  message,
+  onDiscover,
+}: {
+  cat: CafeCatId
+  className: string
+  found: boolean
+  message: string
+  onDiscover: CatDiscoveryHandler
+}) {
+  const name = cafeCatNames[cat]
+
+  return (
+    <button
+      className={`cat-easter-egg ${className}`}
+      type="button"
+      aria-label={`Say hello to ${name}, a hidden Cat Cafe cat`}
+      aria-pressed={found}
+      data-found={found}
+      title={`Say hello to ${name}`}
+      onClick={() => onDiscover(cat, name, message)}
+    >
+      <CafeCatAsset cat={cat} />
+      <span className="cat-egg-whisper">{found ? `${name} found!` : 'psst…'}</span>
+    </button>
+  )
+}
+
+function CatTrailToast({
+  cat,
+  count,
+  message,
+  onDismiss,
+}: {
+  cat: CafeCatId
+  count: number
+  message: string
+  onDismiss: () => void
+}) {
+  return (
+    <aside className="cat-trail-toast" role="status" aria-live="polite">
+      <CafeCatAsset cat={cat} />
+      <span>
+        <strong>{message}</strong>
+        <small>{count === cafePetTargets.length ? 'The whole cafe crew is here!' : `${count} of ${cafePetTargets.length} cafe cats found`}</small>
+      </span>
+      <button type="button" onClick={onDismiss} aria-label="Dismiss cat message">
+        <IconClose size={15} />
+      </button>
+    </aside>
+  )
+}
+
 const StaticCatCafeScene = memo(function StaticCatCafeScene() {
   return (
     <>
@@ -794,10 +881,23 @@ function ApulzaBotSnippet() {
   )
 }
 
-function ProductSnippets() {
+function ProductSnippets({
+  foundCats,
+  onDiscoverCat,
+}: {
+  foundCats: CafeCatId[]
+  onDiscoverCat: CatDiscoveryHandler
+}) {
   return (
     <section className="inside-section" id="inside" aria-labelledby="inside-title">
       <div className="section inside-inner">
+        <CatEasterEgg
+          cat="ember"
+          className="inside-cat-egg"
+          found={foundCats.includes('ember')}
+          message="Ember is taking one tiny lap through the study loop."
+          onDiscover={onDiscoverCat}
+        />
         <div className="section-intro centered motion-reveal">
           <p className="eyebrow">Inside Apulza</p>
           <h2 id="inside-title">One calm place for the whole study loop.</h2>
@@ -908,7 +1008,13 @@ function ProductSnippets() {
   )
 }
 
-function TinyDemo() {
+function TinyDemo({
+  foundCats,
+  onDiscoverCat,
+}: {
+  foundCats: CafeCatId[]
+  onDiscoverCat: CatDiscoveryHandler
+}) {
   const [task, setTask] = useState('')
   const [nextStep, setNextStep] = useState('')
 
@@ -940,6 +1046,13 @@ function TinyDemo() {
         onPointerMove={handleTilePointerMove}
         onPointerLeave={resetTileTilt}
       >
+        <CatEasterEgg
+          cat="truffle"
+          className="tiny-demo-cat-egg"
+          found={foundCats.includes('truffle')}
+          message="Truffle approves this very manageable step."
+          onDiscover={onDiscoverCat}
+        />
         <label htmlFor="tiny-task">What do you need to do?</label>
         <div className="tiny-demo-input-row">
           <input
@@ -1179,6 +1292,10 @@ function App() {
   const [accessibilityOpen, setAccessibilityOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [headerScrolled, setHeaderScrolled] = useState(false)
+  const [foundCats, setFoundCats] = useState<CafeCatId[]>([])
+  const [lastFoundCat, setLastFoundCat] = useState<CafeCatId | null>(null)
+  const [catTrailMessage, setCatTrailMessage] = useState('')
+  const [catTrailOpen, setCatTrailOpen] = useState(false)
 
   useEffect(() => {
     window.localStorage.setItem(accessibilityStorageKey, JSON.stringify(accessibilitySettings))
@@ -1262,6 +1379,13 @@ function App() {
     accessibilitySettings.emphasizeLinks && 'accessibility-emphasize-links',
   ].filter(Boolean).join(' ')
 
+  const discoverCat: CatDiscoveryHandler = (cat, name, message) => {
+    setFoundCats((current) => current.includes(cat) ? current : [...current, cat])
+    setLastFoundCat(cat)
+    setCatTrailMessage(foundCats.includes(cat) ? `${name} is always happy to see you again.` : message)
+    setCatTrailOpen(true)
+  }
+
   return (
     <main className={`app ${accessibilityClasses}`}>
       <header className={`site-header${headerScrolled ? ' is-scrolled' : ''}`}>
@@ -1317,6 +1441,13 @@ function App() {
 
       <section className="section-band" id="how">
         <div className="section centered">
+          <CatEasterEgg
+            cat="midnight"
+            className="how-cat-egg"
+            found={foundCats.includes('midnight')}
+            message="Midnight found a quiet place to watch the first small step."
+            onDiscover={discoverCat}
+          />
           <p className="eyebrow motion-reveal">How it works</p>
           <h2 className="motion-reveal">Three small steps to get started.</h2>
           <p className="section-lede motion-reveal">
@@ -1350,9 +1481,9 @@ function App() {
         </div>
       </section>
 
-      <ProductSnippets />
+      <ProductSnippets foundCats={foundCats} onDiscoverCat={discoverCat} />
 
-      <TinyDemo />
+      <TinyDemo foundCats={foundCats} onDiscoverCat={discoverCat} />
 
       <section className="clear-band" id="clear">
         <div className="section clear-inner">
@@ -1408,6 +1539,13 @@ function App() {
       </section>
 
       <section className="section school-section" id="schools">
+        <CatEasterEgg
+          cat="cloud"
+          className="school-cat-egg"
+          found={foundCats.includes('cloud')}
+          message="Cloud says calm support belongs in every study space."
+          onDiscover={discoverCat}
+        />
         <div className="school-card motion-reveal">
           <div className="school-copy">
             <p className="eyebrow">For schools and counselors</p>
@@ -1495,6 +1633,13 @@ function App() {
       </section>
 
       <footer className="footer">
+        <CatEasterEgg
+          cat="feather"
+          className="footer-cat-egg"
+          found={foundCats.includes('feather')}
+          message="Feather waited here in case you needed quiet company."
+          onDiscover={discoverCat}
+        />
         <div className="footer-inner">
           <div className="footer-brand">
             <Brand />
@@ -1509,6 +1654,15 @@ function App() {
           <span>Made for the day you're actually having.</span>
         </div>
       </footer>
+
+      {catTrailOpen && lastFoundCat ? (
+        <CatTrailToast
+          cat={lastFoundCat}
+          count={foundCats.length}
+          message={catTrailMessage}
+          onDismiss={() => setCatTrailOpen(false)}
+        />
+      ) : null}
 
     </main>
   )
