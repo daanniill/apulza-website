@@ -1131,10 +1131,14 @@ function App() {
 
       <section className="clear-band" id="clear">
         <div className="section clear-inner">
-          <div className="trust-proof motion-reveal" id="privacy">
+          <section
+            className="trust-proof motion-reveal"
+            id="privacy"
+            aria-labelledby="privacy-title"
+          >
             <div className="trust-proof-intro">
               <p className="eyebrow">Safety & privacy</p>
-              <h2>Sensitive support deserves clear boundaries.</h2>
+              <h2 id="privacy-title">Sensitive support deserves clear boundaries.</h2>
               <p>
                 Apulza handles course context and personal preferences as sensitive information.
                 The product is designed to support a student—not score, compare, or watch them.
@@ -1152,7 +1156,7 @@ function App() {
             <p className="evidence-note">
               Apulza is a study support tool, not medical care or a replacement for a counselor.
             </p>
-          </div>
+          </section>
           <div className="section-intro motion-reveal">
             <p className="eyebrow">Our foundation</p>
             <h2>Everything is built on CLEAR.</h2>
