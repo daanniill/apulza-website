@@ -7,6 +7,48 @@ type IconProps = {
   size?: number
 }
 
+type TextSize = 'small' | 'default' | 'large'
+
+type AccessibilitySettings = {
+  lowStimulation: boolean
+  textSize: TextSize
+  dyslexiaFriendly: boolean
+  highContrast: boolean
+  emphasizeLinks: boolean
+}
+
+const defaultAccessibilitySettings: AccessibilitySettings = {
+  lowStimulation: false,
+  textSize: 'default',
+  dyslexiaFriendly: false,
+  highContrast: false,
+  emphasizeLinks: false,
+}
+
+const accessibilityStorageKey = 'apulza-accessibility-preferences'
+
+function loadAccessibilitySettings(): AccessibilitySettings {
+  try {
+    const stored = window.localStorage.getItem(accessibilityStorageKey)
+    if (!stored) return defaultAccessibilitySettings
+
+    const parsed = JSON.parse(stored) as Partial<AccessibilitySettings>
+    const textSize: TextSize = ['small', 'default', 'large'].includes(parsed.textSize ?? '')
+      ? (parsed.textSize as TextSize)
+      : 'default'
+
+    return {
+      lowStimulation: Boolean(parsed.lowStimulation),
+      textSize,
+      dyslexiaFriendly: Boolean(parsed.dyslexiaFriendly),
+      highContrast: Boolean(parsed.highContrast),
+      emphasizeLinks: Boolean(parsed.emphasizeLinks),
+    }
+  } catch {
+    return defaultAccessibilitySettings
+  }
+}
+
 const navItems = [
   { label: 'How it works', href: '#how' },
   { label: 'Inside Apulza', href: '#inside' },
@@ -252,6 +294,29 @@ function IconMenu({ className, size = 20 }: IconProps) {
       <line x1="4" x2="20" y1="7" y2="7" />
       <line x1="4" x2="20" y1="12" y2="12" />
       <line x1="4" x2="20" y1="17" y2="17" />
+    </svg>
+  )
+}
+
+function IconAccessibility({ className, size = 20 }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+    >
+      <circle cx="12" cy="4.5" r="2" />
+      <path d="M5 8.5c2.2 1 4.5 1.5 7 1.5s4.8-.5 7-1.5" />
+      <path d="m9.5 10-.8 4.3L6 20" />
+      <path d="m14.5 10 .8 4.3L18 20" />
+      <path d="M12 10v10" />
     </svg>
   )
 }
@@ -976,11 +1041,156 @@ function DemoRequestForm() {
   )
 }
 
+type AccessibilityMenuProps = {
+  isOpen: boolean
+  onToggle: () => void
+  settings: AccessibilitySettings
+  onChange: (next: AccessibilitySettings) => void
+}
+
+function AccessibilityMenu({ isOpen, onToggle, settings, onChange }: AccessibilityMenuProps) {
+  const updateSetting = <Key extends keyof AccessibilitySettings>(
+    key: Key,
+    value: AccessibilitySettings[Key],
+  ) => onChange({ ...settings, [key]: value })
+
+  const activeCount = [
+    settings.lowStimulation,
+    settings.textSize !== 'default',
+    settings.dyslexiaFriendly,
+    settings.highContrast,
+    settings.emphasizeLinks,
+  ].filter(Boolean).length
+
+  const toggleRows = [
+    {
+      key: 'lowStimulation' as const,
+      label: 'Low stimulation',
+      description: 'Reduce motion, effects, and decorative imagery.',
+    },
+    {
+      key: 'dyslexiaFriendly' as const,
+      label: 'Dyslexia-friendly font',
+      description: 'Use Lexend with roomier letter and line spacing.',
+    },
+    {
+      key: 'highContrast' as const,
+      label: 'Higher contrast',
+      description: 'Strengthen text, borders, and focus indicators.',
+    },
+    {
+      key: 'emphasizeLinks' as const,
+      label: 'Emphasize links',
+      description: 'Underline links so they are easier to identify.',
+    },
+  ]
+
+  return (
+    <div className="accessibility-menu-shell">
+      <button
+        className="accessibility-trigger"
+        type="button"
+        aria-expanded={isOpen}
+        aria-controls="accessibility-menu"
+        aria-haspopup="dialog"
+        onClick={onToggle}
+      >
+        <IconAccessibility size={17} />
+        <span>Accessibility</span>
+        {activeCount > 0 ? <b aria-label={`${activeCount} settings active`}>{activeCount}</b> : null}
+      </button>
+
+      {isOpen ? (
+        <section
+          className="accessibility-menu"
+          id="accessibility-menu"
+          role="dialog"
+          aria-labelledby="accessibility-title"
+        >
+          <div className="accessibility-menu-head">
+            <div>
+              <span className="accessibility-kicker">Make this space yours</span>
+              <h2 id="accessibility-title">Accessibility</h2>
+            </div>
+            <button className="accessibility-close" type="button" onClick={onToggle} aria-label="Close accessibility menu">
+              <IconClose size={18} />
+            </button>
+          </div>
+
+          <div className="accessibility-text-control">
+            <div>
+              <strong>Text size</strong>
+              <span>Adjust text across the whole site.</span>
+            </div>
+            <div className="text-size-options" role="group" aria-label="Text size">
+              {([
+                ['small', 'A', 'Small'],
+                ['default', 'A', 'Default'],
+                ['large', 'A', 'Large'],
+              ] as const).map(([value, label, accessibleLabel]) => (
+                <button
+                  type="button"
+                  className={`text-size-${value}`}
+                  aria-label={`${accessibleLabel} text`}
+                  aria-pressed={settings.textSize === value}
+                  onClick={() => updateSetting('textSize', value)}
+                  key={value}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="accessibility-options">
+            {toggleRows.map((row) => (
+              <button
+                className="accessibility-option"
+                type="button"
+                role="switch"
+                aria-checked={settings[row.key]}
+                onClick={() => updateSetting(row.key, !settings[row.key])}
+                key={row.key}
+              >
+                <span>
+                  <strong>{row.label}</strong>
+                  <small>{row.description}</small>
+                </span>
+                <i aria-hidden="true"><b /></i>
+              </button>
+            ))}
+          </div>
+
+          <div className="accessibility-menu-foot">
+            <span>Preferences are saved on this device.</span>
+            <button type="button" onClick={() => onChange(defaultAccessibilitySettings)} disabled={activeCount === 0}>
+              Reset all
+            </button>
+          </div>
+        </section>
+      ) : null}
+    </div>
+  )
+}
+
 function App() {
   const [openFaq, setOpenFaq] = useState(0)
-  const [calmerView, setCalmerView] = useState(false)
+  const [accessibilitySettings, setAccessibilitySettings] = useState(loadAccessibilitySettings)
+  const [accessibilityOpen, setAccessibilityOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [headerScrolled, setHeaderScrolled] = useState(false)
+
+  useEffect(() => {
+    window.localStorage.setItem(accessibilityStorageKey, JSON.stringify(accessibilitySettings))
+  }, [accessibilitySettings])
+
+  useEffect(() => {
+    document.documentElement.dataset.apulzaTextSize = accessibilitySettings.textSize
+
+    return () => {
+      delete document.documentElement.dataset.apulzaTextSize
+    }
+  }, [accessibilitySettings.textSize])
 
   useEffect(() => {
     const updateHeader = () => setHeaderScrolled(window.scrollY > 24)
@@ -993,7 +1203,10 @@ function App() {
   useEffect(() => {
     const reveals = Array.from(document.querySelectorAll<HTMLElement>('.motion-reveal'))
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (
+      accessibilitySettings.lowStimulation ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
       reveals.forEach((element) => element.classList.add('is-visible'))
       return
     }
@@ -1012,19 +1225,23 @@ function App() {
 
     reveals.forEach((element) => observer.observe(element))
     return () => observer.disconnect()
-  }, [])
+  }, [accessibilitySettings.lowStimulation])
 
   useEffect(() => {
-    if (!mobileMenuOpen) return
+    if (!mobileMenuOpen && !accessibilityOpen) return
 
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setMobileMenuOpen(false)
+      if (event.key === 'Escape') {
+        setMobileMenuOpen(false)
+        setAccessibilityOpen(false)
+      }
     }
 
     const closeOutsideHeader = (event: PointerEvent) => {
       const target = event.target
       if (target instanceof Node && !document.querySelector('.site-header')?.contains(target)) {
         setMobileMenuOpen(false)
+        setAccessibilityOpen(false)
       }
     }
 
@@ -1035,10 +1252,18 @@ function App() {
       document.removeEventListener('keydown', closeOnEscape)
       document.removeEventListener('pointerdown', closeOutsideHeader)
     }
-  }, [mobileMenuOpen])
+  }, [mobileMenuOpen, accessibilityOpen])
+
+  const accessibilityClasses = [
+    accessibilitySettings.lowStimulation && 'is-low-stim',
+    `accessibility-text-${accessibilitySettings.textSize}`,
+    accessibilitySettings.dyslexiaFriendly && 'accessibility-lexend',
+    accessibilitySettings.highContrast && 'accessibility-high-contrast',
+    accessibilitySettings.emphasizeLinks && 'accessibility-emphasize-links',
+  ].filter(Boolean).join(' ')
 
   return (
-    <main className={`app${calmerView ? ' is-calm' : ''}`}>
+    <main className={`app ${accessibilityClasses}`}>
       <header className={`site-header${headerScrolled ? ' is-scrolled' : ''}`}>
         <Brand />
         <nav
@@ -1047,22 +1272,19 @@ function App() {
           aria-label="Primary navigation"
         >
           {navItems.map((item) => (
-            <a href={item.href} key={item.href} onClick={() => setMobileMenuOpen(false)}>
+            <a href={item.href} key={item.href} onClick={() => {
+              setMobileMenuOpen(false)
+              setAccessibilityOpen(false)
+            }}>
               {item.label}
             </a>
           ))}
-          <button
-            className="calm-toggle"
-            type="button"
-            aria-pressed={calmerView}
-            onClick={() => {
-              setCalmerView((current) => !current)
-              setMobileMenuOpen(false)
-            }}
-          >
-            <IconSpark size={16} />
-            <span>{calmerView ? 'Full view' : 'Calmer view'}</span>
-          </button>
+          <AccessibilityMenu
+            isOpen={accessibilityOpen}
+            onToggle={() => setAccessibilityOpen((current) => !current)}
+            settings={accessibilitySettings}
+            onChange={setAccessibilitySettings}
+          />
           <a className="nav-cta" href="#try" onClick={() => setMobileMenuOpen(false)}>
             Try it now
           </a>
@@ -1073,7 +1295,10 @@ function App() {
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-navigation"
           aria-label={mobileMenuOpen ? 'Close navigation' : 'Open navigation'}
-          onClick={() => setMobileMenuOpen((current) => !current)}
+          onClick={() => {
+            setAccessibilityOpen(false)
+            setMobileMenuOpen((current) => !current)
+          }}
         >
           {mobileMenuOpen ? <IconClose /> : <IconMenu />}
         </button>
