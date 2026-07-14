@@ -1005,6 +1005,29 @@ function App() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileMenuOpen(false)
+    }
+
+    const closeOutsideHeader = (event: PointerEvent) => {
+      const target = event.target
+      if (target instanceof Node && !document.querySelector('.site-header')?.contains(target)) {
+        setMobileMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', closeOnEscape)
+    document.addEventListener('pointerdown', closeOutsideHeader)
+
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape)
+      document.removeEventListener('pointerdown', closeOutsideHeader)
+    }
+  }, [mobileMenuOpen])
+
   return (
     <main className={`app${calmerView ? ' is-calm' : ''}`}>
       <header className="site-header">

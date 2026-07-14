@@ -215,6 +215,7 @@
 .app a,
 .app button {
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .app button {
@@ -1737,6 +1738,11 @@ p {
 
 .snippet-copy {
   position: relative;
+  min-width: 0;
+}
+
+.snippet-frame {
+  min-width: 0;
 }
 
 .snippet-number {
@@ -3601,8 +3607,13 @@ p {
 
 @media (max-width: 900px) {
   .site-header {
+    top: max(10px, env(safe-area-inset-top));
     width: min(680px, calc(100% - 20px));
     border-radius: 8px;
+  }
+
+  .brand {
+    min-height: 44px;
   }
 
   .nav {
@@ -3620,6 +3631,9 @@ p {
     background: rgba(255, 255, 255, 0.97);
     box-shadow: var(--shadow-lg);
     backdrop-filter: blur(16px);
+    max-height: calc(100dvh - 86px - env(safe-area-inset-top));
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .nav.is-open {
@@ -3644,8 +3658,8 @@ p {
 
   .mobile-menu-toggle {
     display: grid;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     flex: none;
     place-items: center;
     border: 1px solid var(--primary-weak-bd);
@@ -3672,8 +3686,9 @@ p {
   }
 
   .snippet-feature-reverse,
+  .snippet-feature-reverse:not(.snippet-feature-cafe),
   .snippet-feature-cafe.snippet-feature-reverse {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .snippet-feature-cafe .snippet-copy,
@@ -3715,6 +3730,10 @@ p {
 }
 
 @media (max-width: 680px) {
+  .app {
+    background-attachment: scroll;
+  }
+
   .section,
   .faq-section,
   .footer-inner,
@@ -3824,7 +3843,13 @@ p {
   .cat-curator { left: 68%; }
 
   .hero-editorial {
-    padding: 104px 16px 94px;
+    padding: calc(96px + env(safe-area-inset-top)) 16px 94px;
+  }
+
+  .hero-editorial > img {
+    animation: none;
+    transform: scale(1.03);
+    will-change: auto;
   }
 
   h1 {
@@ -3860,6 +3885,11 @@ p {
 
   .button {
     width: 100%;
+  }
+
+  .hero-scroll-cue {
+    width: 44px;
+    height: 44px;
   }
 
   .pulse-note {
@@ -3967,6 +3997,16 @@ p {
     grid-template-columns: 1fr;
   }
 
+  .dash-assignment-actions a,
+  .dash-add-course {
+    min-height: 44px;
+  }
+
+  .cafe-pet-target {
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+  }
+
   .dash-course-row {
     grid-template-columns: 30px minmax(0, 1fr);
   }
@@ -4046,8 +4086,64 @@ p {
     padding: 22px;
   }
 
+  .demo-form input,
+  .demo-form select,
+  .demo-form textarea {
+    font-size: 1rem;
+  }
+
   .footer-bottom {
     flex-direction: column;
     align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .clear-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .clear-card {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    column-gap: 12px;
+    align-items: start;
+    padding: 16px;
+  }
+
+  .clear-card > span {
+    grid-row: 1 / span 2;
+  }
+
+  .clear-card h3 {
+    margin-top: 0;
+    font-size: 0.95rem;
+  }
+
+  .clear-card p {
+    grid-column: 2;
+    margin-top: 5px;
+    font-size: 0.84rem;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .interactive-tile,
+  .interactive-tile.motion-reveal:not(.is-visible) {
+    transform: none;
+    will-change: auto;
+  }
+
+  .interactive-tile:hover {
+    border-color: inherit;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .interactive-tile:hover::after {
+    opacity: 0;
+  }
+
+  .button:hover {
+    transform: none;
   }
 }
