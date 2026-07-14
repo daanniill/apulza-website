@@ -10,7 +10,7 @@ type IconProps = {
 const navItems = [
   { label: 'How it works', href: '#how' },
   { label: 'Inside Apulza', href: '#inside' },
-  { label: 'Approach', href: '#clear' },
+  { label: 'Safety & privacy', href: '#privacy' },
   { label: 'For schools', href: '#schools' },
 ]
 
@@ -24,21 +24,21 @@ const trustPoints = [
 const steps = [
   {
     number: '1',
-    title: "Tell it what you're studying",
-    body: 'Add a course or drop in a task. A quick note is enough - it saves as you type.',
-    demo: 'input',
+    title: 'Create your account',
+    body: 'Choose the kind of support that feels useful. You can change it whenever you need.',
+    demo: 'account',
   },
   {
     number: '2',
-    title: 'Get one small next step',
-    body: 'Apulza turns it into a short, doable plan. Never a wall of tasks, never a red badge.',
-    demo: 'task',
+    title: 'Add your courses',
+    body: 'A course name, syllabus, or assignment is enough for Apulza to understand the context.',
+    demo: 'courses',
   },
   {
     number: '3',
-    title: 'Come back whenever',
-    body: "It remembers your place, your progress, and what's next. There's no catching up.",
-    demo: 'resume',
+    title: 'Get your study plan',
+    body: 'Start with a course-specific plan broken into realistic strategies and manageable steps.',
+    demo: 'plan',
   },
 ] as const
 
@@ -73,19 +73,19 @@ const clearPrinciples = [
 
 const trustEvidence = [
   {
-    title: 'A visible product standard',
-    body: 'CLEAR is the rubric used to review every screen: cognitive load, re-entry, emotional safety, adaptation, and reliable memory.',
-    icon: <IconBookmark />,
+    title: 'Sensitive by default',
+    body: 'Course, study, and mental-health preferences are treated as sensitive information and used to personalize support.',
+    icon: <IconShield />,
   },
   {
-    title: 'Accessibility is a release check',
-    body: 'Strong contrast, 44px touch targets, clear focus states, and optional motion are treated as requirements, not extras.',
+    title: 'Support without surveillance',
+    body: 'Apulza is built as a student companion—not a leaderboard, behavior score, or tool for comparing students.',
     icon: <IconHeart />,
   },
   {
-    title: 'Privacy without surveillance',
-    body: 'Apulza is designed as a student companion—not a leaderboard, behavior score, or tool for watching students work.',
-    icon: <IconShield />,
+    title: 'Clear care boundaries',
+    body: 'Grounding tools and library resources are educational support, clearly labeled as not medical advice or clinical care.',
+    icon: <IconBookmark />,
   },
 ]
 
@@ -408,29 +408,29 @@ function PulseLine({ className }: { className?: string }) {
 }
 
 function StepDemo({ kind }: { kind: (typeof steps)[number]['demo'] }) {
-  if (kind === 'input') {
+  if (kind === 'account') {
     return (
       <div className="step-demo step-demo-input">
-        <span>Cognitive Psychology - Ch. 4</span>
+        <span>Support preferences saved</span>
         <IconCheck size={12} />
       </div>
     )
   }
 
-  if (kind === 'task') {
+  if (kind === 'courses') {
     return (
       <div className="step-demo step-demo-task">
-        <span className="demo-checkbox" aria-hidden="true" />
-        <strong>Read pages 112-118</strong>
-        <em>~25 min</em>
+        <span className="course-demo-icon" aria-hidden="true">CP</span>
+        <strong>Cognitive Psychology</strong>
+        <em>Added</em>
       </div>
     )
   }
 
   return (
     <div className="step-demo step-demo-resume">
-      <span>Picks up at</span>
-      <strong>Page 112 - right where you left off</strong>
+      <span>Your plan is ready</span>
+      <strong>5 manageable steps · Start whenever you are ready</strong>
     </div>
   )
 }
@@ -448,9 +448,9 @@ function EditorialHero() {
           to keep going.
         </h1>
         <p className="hero-lede">
-          Apulza is a study companion for students who carry ADHD, anxiety, or low days. No
-          streaks to lose, no pressure to perform - just the next small step, whenever you're
-          ready.
+          Apulza is an AI-powered study companion for students who carry ADHD, anxiety, or low
+          days. It turns courses and assignments into manageable next steps—with no streaks to
+          lose and no pressure to perform.
         </p>
         <div className="hero-actions">
           <ButtonLink href="#try">
@@ -589,14 +589,14 @@ function CatCafeSnippet() {
   }
 
   return (
-    <div className="product-snippet cafe-snippet" aria-label="My Cat Café preview">
+    <div className="product-snippet cafe-snippet" aria-label="My Cafe focus space preview">
       <div className="cafe-head">
         <div>
-          <h3>My Cat Café</h3>
-          <p>5 of 30 cats</p>
+          <h3>My Cafe</h3>
+          <p>Quiet company for this focus session</p>
         </div>
         <div className="cafe-pills" aria-label="Café status">
-          <span className="coin-pill">● 80</span>
+          <span className="coin-pill">♡ Optional space</span>
           <span className="clawset-pill">▣ Clawset</span>
           <span><i className="time-dot" /> Morning · 3:38 PM</span>
         </div>
@@ -687,53 +687,153 @@ function StudyPlanSnippet() {
   )
 }
 
+function ApulzaBotSnippet() {
+  return (
+    <div className="product-snippet bot-snippet" aria-label="ApulzaBot assignment support preview">
+      <div className="bot-head">
+        <span className="bot-avatar"><IconSpark size={17} /></span>
+        <div>
+          <h3>ApulzaBot</h3>
+          <p>Working with Rhetorical Analysis Essay</p>
+        </div>
+        <em>Course context on</em>
+      </div>
+      <div className="bot-context">
+        <span>English 201</span>
+        <span>Due in 2 days</span>
+        <span>Step 2 of 5</span>
+      </div>
+      <div className="bot-thread">
+        <div className="bot-message bot-message-assistant">
+          <span>ApulzaBot</span>
+          <p>You already chose your article. Want to find one passage that supports your main idea?</p>
+        </div>
+        <div className="bot-message bot-message-user">
+          <p>I know what I want to say, but I cannot figure out how to start.</p>
+        </div>
+        <div className="bot-message bot-message-assistant">
+          <span>ApulzaBot</span>
+          <p>Let’s make the opening smaller. Write one rough sentence beginning with “The author wants the reader to…”</p>
+        </div>
+      </div>
+      <div className="bot-actions" aria-label="Suggested ApulzaBot actions">
+        <span>Give me an example</span>
+        <span>Make this step smaller</span>
+        <span>Help me begin</span>
+      </div>
+    </div>
+  )
+}
+
 function ProductSnippets() {
   return (
     <section className="inside-section" id="inside" aria-labelledby="inside-title">
       <div className="section inside-inner">
         <div className="section-intro centered motion-reveal">
           <p className="eyebrow">Inside Apulza</p>
-          <h2 id="inside-title">A plan that helps. A world that feels good to return to.</h2>
+          <h2 id="inside-title">One calm place for the whole study loop.</h2>
           <p className="section-lede">
-            Apulza pairs practical, personalized study support with a cozy reward space—so making
-            progress feels useful in the moment and welcoming over time.
+            Once your courses are in, Apulza helps you orient, work, regulate, and return without
+            asking you to maintain a perfect routine.
           </p>
         </div>
-        <article className="snippet-feature snippet-feature-plan">
+        <article className="snippet-feature snippet-feature-dashboard">
           <div className="snippet-copy motion-reveal">
             <span className="snippet-number">01</span>
-            <p className="eyebrow">Your study plan</p>
-            <h3>Structure that bends around the student.</h3>
+            <p className="eyebrow">Orient</p>
+            <h3>Open Apulza and know where to begin.</h3>
             <p>
-              Apulza turns a course into short strategies, realistic focus blocks, and a weekly
-              rhythm. It explains why each suggestion helps without turning the plan into another
-              assignment.
+              The dashboard is a calm home base: where you left off, one useful next action, and
+              month-scoped progress framed as encouragement instead of comparison.
             </p>
             <ul className="snippet-benefits">
-              <li><IconCheck /> Personalized to the course and the student</li>
+              {showcasePoints.map((point) => <li key={point}><IconCheck /> {point}</li>)}
+            </ul>
+          </div>
+          <div className="snippet-frame dashboard-snippet-frame motion-reveal"><DashboardPreview /></div>
+        </article>
+        <article className="snippet-feature snippet-feature-plan snippet-feature-reverse">
+          <div className="snippet-copy motion-reveal">
+            <span className="snippet-number">02</span>
+            <p className="eyebrow">AI study plans</p>
+            <h3>Structure that bends around the student.</h3>
+            <p>
+              Apulza turns each course into practical strategies, realistic focus blocks, and a
+              manageable rhythm. Every suggestion stays connected to the actual course.
+            </p>
+            <ul className="snippet-benefits">
+              <li><IconCheck /> Generated for the course—not a generic checklist</li>
               <li><IconCheck /> Clear stopping points and built-in resets</li>
-              <li><IconCheck /> Useful accommodations kept close at hand</li>
+              <li><IconCheck /> Easy to adjust when capacity or deadlines change</li>
             </ul>
           </div>
           <div className="snippet-frame motion-reveal"><StudyPlanSnippet /></div>
         </article>
-        <article className="snippet-feature snippet-feature-cafe">
+        <article className="snippet-feature snippet-feature-bot">
           <div className="snippet-copy motion-reveal">
-            <span className="snippet-number">02</span>
-            <p className="eyebrow">My Cat Café</p>
-            <h3>Gentle rewards, with no streak anxiety.</h3>
+            <span className="snippet-number">03</span>
+            <p className="eyebrow">Work through it</p>
+            <h3>Help that already knows the assignment.</h3>
             <p>
-              Focus time helps a student grow a cozy café, meet new cats, and make the space their
-              own. The reward is about returning—not maintaining a perfect record.
+              ApulzaBot understands the course, assignment, and current study-plan step. It helps
+              a student decide, begin, understand, and continue—not simply produce an answer.
             </p>
             <ul className="snippet-benefits">
-              <li><IconCheck /> Progress unlocks cats and cozy spaces</li>
-              <li><IconCheck /> No leaderboard or competitive pressure</li>
-              <li><IconCheck /> A reason to return that still feels playful</li>
+              <li><IconCheck /> Keeps the course and assignment in context</li>
+              <li><IconCheck /> Breaks a difficult moment into a smaller action</li>
+              <li><IconCheck /> Supports the work without taking it over</li>
+            </ul>
+          </div>
+          <div className="snippet-frame motion-reveal"><ApulzaBotSnippet /></div>
+        </article>
+        <article className="snippet-feature snippet-feature-cafe snippet-feature-reverse">
+          <div className="snippet-copy motion-reveal">
+            <span className="snippet-number">04</span>
+            <p className="eyebrow">Focus and return</p>
+            <h3>A companion when quiet company helps.</h3>
+            <p>
+              My Cafe offers optional ambient body-doubling during focus sessions. Students can
+              spend time with a cat companion and make the space their own—or skip it entirely.
+            </p>
+            <ul className="snippet-benefits">
+              <li><IconCheck /> Entirely optional, with no penalty for taking a break</li>
+              <li><IconCheck /> My Clawset adds light self-expression, not a grind loop</li>
+              <li><IconCheck /> No leaderboard, streak, or competitive pressure</li>
             </ul>
           </div>
           <div className="snippet-frame motion-reveal"><CatCafeSnippet /></div>
         </article>
+        <div className="support-tools motion-reveal" aria-labelledby="support-tools-title">
+          <div className="support-tools-intro">
+            <p className="eyebrow">Support for the moment</p>
+            <h3 id="support-tools-title">Useful when you need it. Quiet when you do not.</h3>
+            <p>These tools stay close without becoming another routine to maintain.</p>
+          </div>
+          <div className="support-tool-grid">
+            <article>
+              <span className="support-tool-icon"><IconHeart /></span>
+              <p className="eyebrow">Breathing & grounding</p>
+              <h4>A short reset for overwhelmed moments.</h4>
+              <p>Quick regulation exercises can come before a task, between steps, or not at all.</p>
+              <div className="breathing-preview"><i /> Breathe in <em>4 seconds</em></div>
+            </article>
+            <article>
+              <span className="support-tool-icon"><IconSliders /></span>
+              <p className="eyebrow">My Clawset</p>
+              <h4>Personalization without pressure.</h4>
+              <p>Choose simple looks for a companion as self-expression. Nothing expires when you step away.</p>
+              <div className="clawset-preview"><i /><i /><i /><span>Choose what feels like you</span></div>
+            </article>
+            <article>
+              <span className="support-tool-icon"><IconBookmark /></span>
+              <p className="eyebrow">Resources library</p>
+              <h4>Understand your brain, not just the workload.</h4>
+              <p>Evidence-based ADHD strategies, medication education, and harm-reduction content.</p>
+              <div className="resource-preview"><span>ADHD strategies</span><span>Medication education</span><span>Harm reduction</span></div>
+              <small>Educational information—not medical advice.</small>
+            </article>
+          </div>
+        </div>
       </div>
     </section>
   )
@@ -957,9 +1057,10 @@ function App() {
       <section className="section-band" id="how">
         <div className="section centered">
           <p className="eyebrow motion-reveal">How it works</p>
-          <h2 className="motion-reveal">Three small steps. That's the whole thing.</h2>
+          <h2 className="motion-reveal">Three small steps to get started.</h2>
           <p className="section-lede motion-reveal">
-            No setup marathon, no productivity system to learn. Start where you are.
+            No setup marathon and no productivity system to learn. Apulza introduces what you need
+            just in time.
           </p>
           <div className="step-grid">
             {steps.map((step) => (
@@ -978,32 +1079,68 @@ function App() {
               </article>
             ))}
           </div>
+          <a className="how-bridge motion-reveal" href="#inside">
+            <span>
+              <small>Once your plan is ready</small>
+              <strong>Apulza stays with you through the work.</strong>
+            </span>
+            <IconArrow />
+          </a>
         </div>
-      </section>
-
-      <TinyDemo />
-
-      <section className="section product-showcase" id="product">
-        <div className="dashboard-copy motion-reveal">
-          <p className="eyebrow">The dashboard</p>
-          <h2>It always shows the next small step.</h2>
-          <p>
-            Open Apulza and there's no blank page, no wall of overdue tasks. Just where you left
-            off, a short plan for today, and gentle proof that you're moving.
-          </p>
-          <ul className="check-list">
-            {showcasePoints.map((point) => (
-              <li key={point}>
-                <IconCheck />
-                <span>{point}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <DashboardPreview />
       </section>
 
       <ProductSnippets />
+
+      <TinyDemo />
+
+      <section className="clear-band" id="clear">
+        <div className="section clear-inner">
+          <div className="trust-proof motion-reveal" id="privacy">
+            <div className="trust-proof-intro">
+              <p className="eyebrow">Safety & privacy</p>
+              <h2>Sensitive support deserves clear boundaries.</h2>
+              <p>
+                Apulza handles course context and personal preferences as sensitive information.
+                The product is designed to support a student—not score, compare, or watch them.
+              </p>
+            </div>
+            <div className="evidence-grid" aria-label="Safety and privacy commitments">
+              {trustEvidence.map((item) => (
+                <article key={item.title}>
+                  <span>{item.icon}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
+                </article>
+              ))}
+            </div>
+            <p className="evidence-note">
+              Apulza is a study support tool, not medical care or a replacement for a counselor.
+            </p>
+          </div>
+          <div className="section-intro motion-reveal">
+            <p className="eyebrow">Our foundation</p>
+            <h2>Everything is built on CLEAR.</h2>
+            <p className="section-lede">
+              Five principles act as the acceptance test for every screen. A feature isn't finished
+              until it satisfies all five.
+            </p>
+          </div>
+          <div className="clear-grid" aria-label="CLEAR principles">
+            {clearPrinciples.map((principle) => (
+              <article
+                className="clear-card interactive-tile motion-reveal"
+                key={principle.letter}
+                onPointerMove={handleTilePointerMove}
+                onPointerLeave={resetTileTilt}
+              >
+                <span>{principle.letter}</span>
+                <h3>{principle.title}</h3>
+                <p>{principle.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className="section school-section" id="schools">
         <div className="school-card motion-reveal">
@@ -1029,55 +1166,6 @@ function App() {
               src="/assets/school-study-room.png"
               alt="A calm, sunlit study space with students working quietly."
             />
-          </div>
-        </div>
-      </section>
-
-      <section className="clear-band" id="clear">
-        <div className="section clear-inner">
-          <div className="section-intro motion-reveal">
-            <p className="eyebrow">Our foundation</p>
-            <h2>Everything is built on CLEAR.</h2>
-            <p className="section-lede">
-              Five principles act as the acceptance test for every screen. A feature isn't finished
-              until it satisfies all five.
-            </p>
-          </div>
-          <div className="clear-grid" aria-label="CLEAR principles">
-            {clearPrinciples.map((principle) => (
-              <article
-                className="clear-card interactive-tile motion-reveal"
-                key={principle.letter}
-                onPointerMove={handleTilePointerMove}
-                onPointerLeave={resetTileTilt}
-              >
-                <span>{principle.letter}</span>
-                <h3>{principle.title}</h3>
-                <p>{principle.body}</p>
-              </article>
-            ))}
-          </div>
-          <div className="trust-proof motion-reveal" id="proof">
-            <div className="trust-proof-intro">
-              <p className="eyebrow">What we can say today</p>
-              <h2>Trust should be specific.</h2>
-              <p>
-                Apulza is still growing, so we will not borrow credibility from anonymous success
-                stories. These are the product commitments you can evaluate now.
-              </p>
-            </div>
-            <div className="evidence-grid" aria-label="Product commitments">
-              {trustEvidence.map((item) => (
-                <article key={item.title}>
-                  <span>{item.icon}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.body}</p>
-                </article>
-              ))}
-            </div>
-            <p className="evidence-note">
-              Apulza is a study support tool, not medical care or a replacement for a counselor.
-            </p>
           </div>
         </div>
       </section>
