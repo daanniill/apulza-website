@@ -1107,7 +1107,7 @@ function DemoRequestForm() {
     )
 
     setEmailOpened(true)
-    window.location.href = `mailto:hello@apulza.com?subject=${subject}&body=${body}`
+    window.location.href = `mailto:apulzaai@outlook.com?subject=${subject}&body=${body}`
   }
 
   return (
